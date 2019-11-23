@@ -1,0 +1,715 @@
+\documentclass{article}
+
+\input{note_header.tex}
+\input{emre_header.tex}
+
+\begin{document}
+	\begin{titlepage}
+		\vspace*{\fill}
+		\begin{center}
+			{\Huge{\textbf{Tensor Analysis}}}\\[2cm]
+			{\large{Emre Özer}\\[0.1cm]}
+			Autumn 2019 \\
+			\vspace{4mm}
+			Notes based on the book \textit{``Introduction to Tensor Analysis and the Calculus of Moving Surfaces''} by PAVEL GRINFELD. 
+		\end{center}
+		\vspace*{\fill}
+	\end{titlepage}
+	
+	\tableofcontents
+	\newpage
+	\section{Basics}
+	Let's start with a description of objects in Euclidean spaces in tensor terms.
+	\definition[Vector] A \textit{vector} is a directed line segment - a \textit{length with a direction}.
+	\definition[Dot product] We define the dot product \textit{geometrically}, meaning independent of any coordinates. Given two vectors $ \vb{u} $ and $ \vb{v} $, their dot product is
+	\begin{equation} \label{eq:dotp}
+		\dotp{\vb{u}}{\vb{v}} = \abs{\vb{u}} \abs{\vb{v}} \cos \alpha,
+	\end{equation}
+	where $ \abs{\vb{u}} $ and $ \abs{\vb{v}} $ are the \textit{lengths} of the vectors and $ \alpha $ is the \textit{angle} between them. Note that although this definition looks like it assumes the lengths of the vectors and angles between them are defined, only the length is the \textit{primary} concept. The dot product can be defined in terms of lengths alone, to see this, consider
+	\[
+	(\vb{u} + \vb{v}) \cdot (\vb{u} + \vb{v}) = \abs{\vb{u} + \vb{v}}^2 = u^2 + v^2 + 2 (\vb{u} \cdot \vb{v}),
+	\]\[
+	\implies \vb{u} \cdot \vb{v} = \frac{1}{2} \qty(\abs{\vb{u} + \vb{v}}^2 - u^2 - v^2),
+	\]
+	where $ u^2 $ and $ v^2 $ are the squared lengths of $ \vb{u} $ and $ \vb{v} $. We have assumed commutativity and distributivity of the dot product which can be easily proved from definition \eqref{eq:dotp}. The expression above doesn't involve angles, so we may define the angle from the dot product.
+	\definition[Variant] Objects whose values \textit{change} depending on the choice of coordinates.
+	\example[Variants] The \textit{components} of vectors such as velocity and force, the basis vectors, the metric tensor...
+	\definition[Invariant] Objects that do not depend on the choice of coordinates.
+	\begin{example}[Invariants]
+		Physical quantities such as force and displacement vectors, scalars, physical fields...
+	\end{example}
+	We would hope that any physical object is an invariant since the universe doesn't have a preferred coordinate system. Coordinates are just labels, invariants objects do not need labels to exist. This is a very powerful statement, as it allows us to \textit{find physical quantities} just by looking at the invariants. An example of this is the relativistic action, constructed from the invariant proper time.
+	\begin{definition}[Position vector]
+		The \textit{position vector} is a vector $ \vb{R} $ that represents the positions of points in Euclidean space with respect to an arbitrary origin $ O $.
+	\end{definition}
+	Note that the position vector is introduced with no reference to a coordinate system. So, it is \textit{invariant} (or \textit{geometric}).
+	\subsection{Position vector as function of coordinates}
+	Let $ x^{i} $ denote a set of coordinates. Now, since the coordinates assign a \textit{unique label} to each point, the position vector now becomes a function of the coordinates $ x^{i} $. Denote this functions as
+	\begin{equation} \label{eq:11}
+		\vb{R} = \vb{R}(x),
+	\end{equation}
+	where $ x $ stands for the coordinates $ x^{i} $. This equation features the symbol $ \vb{R} $ in two different roles. On the left-hand side, $ \vb{R} $ represents the geometric position vector. On the right-hand side, $ \vb{R} $ stands for the vector-valued function that yields the position vector for every valid combination of coordinates. As it is often the case, the same letter is used to represent two different objects. $ \vb{R} $ is the invariant position vector while $ \vb{R}(x) $ is a vector-valued function of three variables.
+	\par
+	It is essential to treat $ \vb{R} $ as a primary object that is subject to its own set of rules and operations. It is counterproductive to think of $ \vb{R} $ as a triplet of components with respect to a some Cartesian grid. There is no basis with respect to which $ \vb{R} $ can be decomposed. In fact, we will define the basis from $ \vb{R}(x) $.
+	\subsection{Covariant basis}
+	\begin{definition}[Covariant Basis]
+		The \textit{covariant basis} is obtained from differentiating the position vector $ \vb{R} (x)$ with respect to each of the coordinates:
+		\begin{equation}
+			\vb{e}_i = \pdv{\vb{R}(x)}{x^i}.
+		\end{equation}
+	\end{definition}
+	Note that the basis vectors may vary in space. Such basis are called \textit{local}. At all points in the Euclidean space, the covariant basis $ \vb{e}_i $ provides a convenient basis for decomposing vectors. The \textit{contravariant components} $ v^i $ of a vector $ \vb{v} $ are the scalar values that produce $ \vb{v} $ when used in a linear combination with the vectors $ \vb{e}_i $:
+	\begin{equation}
+		\vb{v} = v^i \vb{e}_i.
+	\end{equation}
+	\subsection{Covariant metric tensor}
+	\begin{definition}[Covariant metric tensor]
+		The \textit{covariant metric tensor} is defined as the pairwise dot products of the covariant  basis vectors,
+		\begin{equation}
+			g_{ij} = \dotp{\vb{e}_i}{\vb{e}_j}.
+		\end{equation}
+	\end{definition}
+	\begin{corollary}
+		Since the dot product is commutative, the metric tensor is symmetric:
+		\[
+		\dotp{\vb{e}_i}{\vb{e}_j} = \dotp{\vb{e}_j}{\vb{e}_i}  \implies g_{ij} = g_{ji}.
+		\]
+	\end{corollary}
+	\begin{proposition}[Dot product]
+		Suppose two vectors $ \vb{v} $ and $ \vb{u} $ are located at the same point, with components $ v^i $ and $ u^{i} $. Then their dot product $ \dotp{\vb{u}}{\vb{v}} $ is given by
+		\begin{equation}
+			\vb{u} \cdot \vb{v} = u^{i} \vb{e}_i \cdot v^{j} \vb{e}_j = u^{i} v^{j} (\vb{e}_i \cdot \vb{e}_j) = u^{i} v^{j} g_{ij}.
+		\end{equation}
+	\end{proposition}
+	\begin{corollary}
+		The length of a vector in terms of the metric is given by
+		\[
+		\abs{\vb{v}} = \sqrt{\dotp{\vb{v}}{\vb{v}}}=  \sqrt{g_{ij} v^{i} v^{j}}.
+		\]
+	\end{corollary}
+	\begin{proposition}
+		The covariant metric interpreted as a matrix is positive-definite.
+	\end{proposition}
+	\proof Let $ \vb{u} $ be a non-zero vector, and let $ g $ denote the metric tensor as a matrix. Then,
+	\[
+	\vb{u}^{\intercal} g \vb{u} = u^{i} g_{ij} u^{j} = \dotp{\vb{u}}{\vb{u}} = u^2 > 0. \qed
+	\]
+	\subsection{Contravariant metric tensor}
+	\begin{definition}[Contravariant metric tensor]
+		The \textit{contravariant metric tensor} $ g^{ij} $ is defined as the matrix inverse of the covariant metric tensor $ g_{ij} $:
+		\begin{equation}
+			g^{ik} g_{kj} = \delta^i_k \Longleftrightarrow g^{ik}g_{jk} = \delta^i_k.
+		\end{equation}
+	\end{definition}
+	\begin{corollary}
+		The contravariant metric tensor is symmetric, $ g^{ij} = g^{ji} $.
+	\end{corollary}
+	\proof The inverse of any symmetric matrix is symmetric. Let $ A $ and $ B $ be inverses of each other and let $ A_{ij} = A_{ji} $. We have $ AB = I $ so,
+	\[
+	A_{ij} B^{jk} = A_{ji}B^{jk} = B^{jk}A_{ji} = \delta^k_i \implies B^{jk} = B^{kj}
+	\]
+	since we know $ BA = I  \Leftrightarrow B^{kj}A_{ji} = \delta^k_i$. \qed
+	\subsection{Contravariant basis}
+	\begin{definition}[Contravariant basis]
+		The \textit{contravariant basis} $ \vb{e}^{i} $ is defined with respect to the covariant basis by the set of relations
+		\begin{equation}
+			 \vb{e}^{i} \cdot \vb{e}_{j} = \delta^{i}_{j},
+		\end{equation}
+		so that the covariant and contravariant basis are \textit{mutually orthonormal}.
+	\end{definition}
+	\begin{corollary}
+		The contravariant basis can be explicitly written in terms of the contravariant metric and the covariant basis as follows:
+		\begin{equation} \label{eq:covbasis2}
+			\delta^{i}_{j} = g^{ik}g_{kj} = g^{ik} \vb{e}_{k} \cdot \vb{e}_{j} = \vb{e}^{i} \cdot \vb{e}_{j} \implies \vb{e}^{i} = g^{ik} \vb{e}_{k}.
+		\end{equation}
+	\end{corollary}
+	\begin{corollary}
+		The pairwise dot product of the contravariant basis vectors yield the contravariant metric tensor,
+		\[
+		\vb{e}^{i} \cdot \vb{e}^{j} = g^{ik} \vb{e}_{k} \cdot g^{jm} \vb{e}_{m} = g^{ik} g^{jm} g_{km} = g^{ij}.
+		\]
+	\end{corollary}
+	\begin{corollary}[Covariant vector components]
+		The definition for the covariant vector components follows from the contravariant basis. We have
+		\[
+		\vb{v} = v^{i} \vb{e}_i = v^{i} g_{ij}\vb{e}^{j} = v_j \vb{e}^{j}
+		\]
+		where we naturally defined $ v_j = g_{ij} v^{i} $.
+	\end{corollary}
+	\begin{corollary}[Vector component decomposition]
+		It's straightforward to show that
+		\[
+		v^{i} = \vb{v} \cdot \vb{e}^{i} \qq{and} v_{i} = \vb{v} \cdot \vb{e}_{i}.
+		\]
+	\end{corollary}
+	\subsection{Line element}
+	We may express the line element $ \dd{s}^2 $ in terms of the metric $ g_{ij} $. If the coordinates $ x^{i} $ parameterize a surface, the line element is also called the \textit{first fundamental form.} Consider a small displacement $ \delta \vb{R} $. By the chain rule, we have
+	\[
+	\delta \vb{R} = \pdv{\vb{R}(x)}{x^{i}} \delta x^{i} + o(\delta x).
+	\]
+	The length of the small displacement is given by
+	\[
+	\delta s^2 = \delta \vb{R} \cdot \delta \vb{R} = \delta x^{i} \delta x^{j} \pdv{\vb{R}}{x^{i}} \cdot \pdv{\vb{R}}{x^{j}} + o(\delta x^2) =  \delta x^{i} \delta x^{j} g_{ij} + o(\delta x^2).
+	\]
+	Taking the limit as $ \delta x^{i} \to \dd x^{i} $ yields the \textit{line element}:
+	\begin{equation}
+	 \dd s^{2} = \dd x^{i} \dd x^{j} g_{ij}.
+	\end{equation}
+		The arc length of a curve parameterized by some $ x^{i} = x^{i}(t) $ is then given by
+		\begin{equation}
+			L = \int \sqrt{g_{ij}\dv{x^{i}}{t}\dv{x^{j}}{t}} \dd t.
+		\end{equation}
+	To see why this is, simply reparameterize $ \delta \vb{R} $ in terms of $ t $, so
+	\[
+	\delta \vb{R} = \pdv{\vb{R}(t(x))}{x^{i}}\dv{x^{i}(t)}{t} \delta t + o(\delta t) \implies \dd s^{2} = \dv{x^{i}}{t}\dv{x^{j}}{t} g_{ij}.
+	\]
+	\subsection{The Christoffel symbol}
+	In curvilinear coordinate systems, the basis varies from one point to another. The variation can be described by the partial derivatives $ \pdv*{\vb{e}_{i}}{x^{j}} $. The expression $ \pdv*{\vb{e}_{i}}{x^{j}} $ represents $ N^2 $ vectors: each of the basis elements differentiated with respect to each of the coordinates. Each of the $ N^2 $ vectors $ \pdv*{\vb{e}_{i}}{x^{j}} $ can be decomposed with respect to the covariant basis $ \vb{e}_{k} $. The resulting $ N^3 $ coefficients form the \textit{Christoffel symbol} $ \Gamma^k_{ij} $:
+	\begin{equation} \label{eq:110}
+		\Gamma^{k}_{ij} \vb{e}_{k} = \pdv{\vb{e}_{i}}{x^{j}} \Longleftrightarrow \Gamma^{k}_{ij} = \vb{e}^{k} \cdot \pdv{\vb{e}_{i}}{x^{j}}.
+	\end{equation} 
+	The Christoffel symbol provides all information about how the basis vectors change depending on position. This will become important when we define gradients later on.
+	\begin{proposition}
+		The Christoffel symbol is symmetric in its lower indices, so $ \Gamma^{k}_{ij} = \Gamma^{k}_{ji} $.
+	\end{proposition}
+	\proof By definition, we write $ \vb{e}^{i} = \pdv*{\vb{R}}{x^{i}} $, hence
+	\[
+	\pdv{\vb{e}_{i}}{x^{j}} = \pdv{^2\vb{R}}{x^{j}\partial x^{i}} =  \pdv{^2\vb{R}}{x^{i}\partial x^{j}} = \pdv{\vb{e}_{j}}{x^{i}}.
+	\]
+	The result follows. \qed
+	\par
+	The Christoffel symbol also appears in the decomposition of the partial
+	derivatives $ \pdv*{\vb{e}^{i}}{x^{j}} $ of the \textit{contravariant} basis $ \vb{e}^{i} $. Transform equation \eqref{eq:110} by the product rule,
+	\[
+	\Gamma^{k}_{ij} = \vb{e}^{k} \cdot \pdv{\vb{e}_{i}}{x^{j}} = \pdv{ ( \vb{e}^{k}\cdot \vb{e}_{i} ) }{x^{j}} - \vb{e}_{i} \cdot \pdv{\vb{e}^{k}}{x^{j}} = - \vb{e}_{i} \cdot \pdv{\vb{e}^{k}}{x^{j}}.
+	\]
+	where the first term vanishes since $ \vb{e}^{k} \cdot \vb{e}_{i} = \delta ^{k} _{i} $ is constant. Hence, we arrive at an alternative definition for the Christoffel symbol:
+	\begin{equation}
+			\Gamma^{k}_{ij} \vb{e}^{i} = - \pdv{\vb{e}^{k}}{x^{j}} \Longleftrightarrow \Gamma^{k}_{ij} = - \vb{e}_{i} \cdot \pdv{\vb{e}^{k}}{x^{j}}.
+	\end{equation}
+	\begin{proposition}
+		The Christoffel symbol can be written in terms of the metric as:
+		\[
+			\Gamma^{k}_{ij} = \frac{1}{2} g^{km} \qty(\pdv{g_{mi}}{x^{j}} + \pdv{g_{mj}}{x^{i}} - \pdv{g_{ij}}{x^{m}}).
+		\]
+	\end{proposition}
+	\proof We simply compute the right hand side. The first term is
+	\[
+	\pdv{g_{mi}}{x^{j}} = \pdv{}{x^{j}} \qty(\vb{e}_{m} \cdot \vb{e}_{i}) 
+	= \vb{e}_{m} \cdot \pdv{\vb{e}_{i}}{x^{j}} + \vb{e}_{i} \cdot \pdv{\vb{e}_{m}}{x^{j}} 
+	= g_{m\ell} \vb{e}^{\ell} \cdot \pdv{\vb{e}_{i}}{x^{j}} + g_{i\ell} \vb{e}^{\ell} \cdot \pdv{\vb{e}_{m}}{x^{j}}
+	\]
+	Similarly, the other two terms are
+	\[
+	\pdv{g_{mj}}{x^{i}} = g_{m\ell} \vb{e}^{\ell} \cdot \pdv{\vb{e}_{j}}{x^{i}} + g_{j\ell} \vb{e}^{\ell} \cdot \pdv{\vb{e}_{m}}{x^{i}} \qq{and} \pdv{g_{ij}}{x^{m}} = g_{i\ell} \vb{e}^{\ell} \cdot \pdv{\vb{e}_{j}}{x^{m}} + g_{j\ell} \vb{e}^{\ell} \cdot \pdv{\vb{e}_{i}}{x^{m}}.
+	\]
+	Substituting the Christoffel symbols, we have
+	\[
+	\pdv{g_{mi}}{x^{j}} + \pdv{g_{mj}}{x^{i}} - \pdv{g_{ij}}{x^{m}} = 2 g_{\ell m} \Gamma^{\ell}_{ij}.
+	\]
+	The result follows:
+	\[
+	\frac{1}{2} g^{km}\qty( 2 g_{\ell m} \Gamma^{\ell}_{ij} ) = \delta^{k}_{\ell} \Gamma^{\ell}_{ij} = \Gamma^{k}_{ij}. \qed
+	\]
+	\example[Velocity components] Consider a particle moving along a curve with parameterization with respect to time $ x^{i} \equiv x^{i}(t) $. Then, the velocity components $ V^{i} $ are given by
+	\[
+	V^{i} = \vb{e}^{i} \cdot \vb{V} = \vb{e}^{i} \cdot \dv{\vb{R}}{t} = \vb{e}^{i} \cdot \pdv{\vb{R}}{x^{j}}\dv{x^{j}}{t} = \delta^{i}_{j} \dv{x^{j}}{t} = \dv{x^{i}}{t}.
+	\]
+	\example[Acceleration components] The acceleration $ \vb{A} $ is more complicated:
+	\[
+	\vb{A} = \dv{\vb{V}}{t} = \dv{}{t}\qty(V^{i} \vb{e}_{i}) = \dv{V^{i}}{t} \vb{e}_{i} + V^{i} \dv{\vb{e}_{i}}{t} = \dv{V^{i}}{t} \vb{e}_{i} + V^{i} \pdv{\vb{e}_{i}}{x^{j}}\dv{x^{j}}{t} = \dv{V^{i}}{t} \vb{e}_{i} + V^{i} V^{j} \pdv{\vb{e}_{i}}{x^{j}}.
+	\]
+	The components $ A^{i} $ are then given by
+	\[
+	A^{i} = \vb{e}^{i} \cdot \vb{A} = \dv{V^{i}}{t} + \vb{e}^{i} \cdot \pdv{\vb{e}_{k}}{x^{j}} V^{j}V^{k} = \dv{V^{i}}{t} + V^{j}V^{k} \Gamma^{i}_{jk}.
+	\]
+	\example[Vector field along curve] For some vector field $ \vb{U}(t) $ defined along the curve $ x^{i} \equiv x^{i}(t) $, the rate of change of $ \vb{U} $ is given by
+	\[
+	\dv{\vb{U}(t)}{t} = \dv{}{t} \qty(U^{i}\vb{e}_{i}) = \dv{U^{i}}{t}\vb{e}_{i} + U^{i} \pdv{\vb{e}_{i}}{x^{j}}V^{j} = \qty(\dv{U^{i}}{t} + U^{k}V^{j}\Gamma^{i}_{kj}) \vb{e}_{i}.
+	\]
+	Hence, if $ \vb{U}(t) $ is constant along the curve, we have
+	\[
+	\dv{U^{i}}{t} + U^{k}V^{j}\Gamma^{i}_{kj} = 0.
+	\]
+	\newpage
+	\section{The Tensor Property}
+	\subsection{Variants and coordinate transformations}
+	A variant is an object that can be constructed by a similar rule in various coordinate systems. For example, the covariant basis $ \vb{e}_{i} $ is a variant because it is obtained in any coordinate system by the same rule—partial differentiation of the position vector. The metric tensor $ g_{ij} $ is also a variant because it is formed by pairwise dot products of the elements of the covariant basis.
+	\par
+	Naturally, when the same rule is applied in different coordinate systems, the results differ. Tensors are variants which transform in specific ways.
+	\par
+	Now, we consider ``nice'' coordinate transformations. By nice, we mean the transformations are continuously differentiable. Consider two coordinate systems, $ x $ and $ x^\prime $, related to each other by
+	\[
+	x^{i} = x^{i}(x^\prime), \qq{and} x^{i^\prime}= x^{i^\prime}(x),
+	\]
+	where, as a notation we denote $ (x^\prime)^{i} $ as $ x^{i^\prime} $. We also note $ i $ and $ i^\prime $ are different indices, so they are not summed over each other. An important identity related with such transformations is:
+	\begin{equation} \label{eq:21}
+	\pdv{x^{i}}{x^{i^\prime}}\pdv{x^{i^\prime}}{x^{j}} = \pdv{x^{i}}{x^{j}} = \delta\indices{^{i}_{j}} = \pdv{x^{i^\prime}}{x^{j^\prime}} = \pdv{x^{i^\prime}}{x^{i}}\pdv{x^{i}}{x^{j^\prime}}.
+	\end{equation}
+	We adopt the following notation in terms of the Jacobians associated with the transformation $ x \to x^\prime $,
+	\begin{equation}
+	J\indices{^{i^\prime}_{i}} \equiv \pdv{x^{i^\prime}}{x^{i}}, \qq{and} J\indices{^{i}_{i^\prime}} \equiv \pdv{x^{i}}{x^{i^\prime}}.
+	\end{equation}
+	We note that although we have used the same letter $ J $ to denote both objects above, they do not refer to the same object. Namely, the two are matrix inverses of each other due to the identity \eqref{eq:21}.
+	\subsection{Definitions and examples of tensors}
+	\begin{definition}[Covariant tensor]
+		A \textit{variant} $ T_{i} $ is called a \textit{covariant tensor of order one} if its components in the coordinates $ x^{i^\prime} $ and $ x^{i} $ are related by
+		\begin{equation}
+			T_{i^\prime} = \pdv{x^{i}}{x^{i^\prime}} T_{i} = J\indices{^{i}_{i^\prime}} T_{i} \Longleftrightarrow T_{i} = J\indices{^{i^\prime}_{i}} T_{i^\prime}.
+		\end{equation}
+	\end{definition}
+	\begin{definition}[Contravariant tensor]
+		A \textit{variant} $ T^{i} $ is called a \textit{contravariant tensor of order one} if its components in the coordinates $ x^{i^\prime} $ and $ x^{i} $ are related by
+		\begin{equation}
+		T^{i^\prime} = \pdv{x^{i^\prime}}{x^{i}} T^{i} = J\indices{^{i^\prime}_{i}} T^{i} \Longleftrightarrow T^{i} = J\indices{^{i}_{i^\prime}} T^{i^\prime}.
+		\end{equation}
+	\end{definition}
+	\begin{proposition}[Contraction invariance]
+		Let $ S^{i} $ be a contravariant and $ T_{i} $ be a covariant tensor. Then, the contraction
+		\[
+		U = S^{i}T_{i}
+		\]
+		is \textit{invariant}. To see why, we simply write the transformation rule for $ U $,
+	\begin{equation}
+	U^\prime = S^{i^\prime} T_{i^\prime} = J\indices{^{i^\prime}_{j}} S^{j} J\indices{^{k}_{i^\prime}} T_{k} = \delta\indices{^{k}_{j}} S^{j} T_{k} = S^{j} T_{j} = U. \qed
+	\end{equation}
+	\end{proposition}
+	\begin{proposition}[Covariant basis]
+		The covariant basis $ \vb{e}_{i} $ is a tensor of rank one. We express $ \vb{e}_{i^\prime} $ in the $ x^\prime $ coordinates and apply the chain rule to obtain the transformation rule,
+		\begin{equation} \label{eq:26}
+		\vb{e}_{i^\prime} = \pdv{\vb{R}}{x^{i^\prime}} = \pdv{\vb{R}}{x^{i}} \pdv{x^{i}}{x^{i^\prime}} = J\indices{^{i}_{i^\prime}} \vb{e}_{i}. \qed
+		\end{equation}
+	\end{proposition}
+	\begin{proposition}[Contravariant vector components]
+		If the covariant basis vectors transform as covariant tensors, the contravariant vector components must transform in the \textit{opposite sense} in order to keep the vector itself invariant. More explicitly, for an arbitrary vector $ \vb{v} $, we have
+		\begin{equation}
+		\vb{v} = v^{i^\prime} \vb{e}_{i^\prime} = v^{i^\prime} J\indices{^{i}_{i^\prime}} \vb{e}_{i} = v^{i} \vb{e}_{i} \implies v^{i} = v^{i^\prime} J\indices{^{i}_{i^\prime}}. \qed
+		\end{equation}
+		Hence, the contravariant vector components transform as contravariant tensors.
+	\end{proposition}
+	\begin{definition}[Higher order tensors]
+		A variant $ T^{ij} $ is a \textit{doubly contravariant}, $ T_{ij} $ is a \textit{doubly covariant} and $ T\indices{^{i}_{j}} $ is a \textit{mixed} tensor of order two if their components transform as
+		\begin{equation}
+		T^{i^\prime j^\prime} = J\indices{^{i^\prime}_{i}} J\indices{^{j^\prime}_{j}} T^{ij}, \quad T_{i^\prime j^\prime} = J\indices{^{i}_{i^\prime}} J\indices{^{j}_{j^\prime}} T_{ij}, \quad T\indices{^{i^\prime}_{j^\prime}} = J\indices{^{i^\prime}_{i}} J\indices{^{j}_{j^\prime}} T\indices{^{i}_{j}}.
+		\end{equation}
+		Higher order generalizations are obvious.
+	\end{definition}
+	\proposition[Kronecker delta] The Kronecker symbol $ \delta\indices{^{i}_{j}} $ transforms as a \textit{mixed tensor of order two.} To see this, we simply multiply (contract) $ \delta^{i}_{j} $ with $ J\indices{^{i^\prime}_{i}} J\indices{^{j}_{j^\prime}} $,
+	\begin{equation}
+	J\indices{^{i^\prime}_{i}} J\indices{^{j}_{j^\prime}} \delta\indices{^{i}_{j}} = J\indices{^{i^\prime}_{i}} J\indices{^{i}_{j^\prime}} = \delta\indices{^{i^\prime}_{j^\prime}}. \qed
+	\end{equation}
+	\begin{proposition}[Contravariant basis]
+		The contravariant basis $ \vb{e}^{i} $ transform as contravariant tensors. By definition, we have
+		\[
+		\vb{e}^{i^\prime} \cdot J^{j}_{j^\prime} \vb{e}_{j} = \vb{e}^{i^\prime} \cdot \vb{e}_{j^\prime} = \delta^{i^\prime}_{j^\prime} = J\indices{^{i^\prime}_{i}} J\indices{^{j}_{j^\prime}} \delta\indices{^{i}_{j}} = J\indices{^{i^\prime}_{i}} J\indices{^{j}_{j^\prime}} \vb{e}^{i} \cdot \vb{e}_{j}.
+		\]
+		Comparing the first and the last term, we see
+		\begin{equation} \label{eq:210}
+		\vb{e}^{i^\prime} = J^{i^\prime}_{i} \vb{e}^{i}. \qed
+		\end{equation}
+	\end{proposition}
+	\begin{proposition}[Covariant metric]
+		The covariant metric is a \textit{doubly covariant tensor}. The proof follows from \eqref{eq:26}:
+		\begin{equation}
+			g_{i^\prime j^\prime} = \vb{e}_{i^\prime} \cdot \vb{e}_{j^\prime} = J\indices{^{i}_{i^\prime}} J\indices{^{j}_{j^\prime}} \vb{e}_{i} \cdot \vb{e}_{j} = J\indices{^{i}_{i^\prime}} J\indices{^{j}_{j^\prime}} g_{ij}. \qed
+		\end{equation}
+	\end{proposition}
+	\begin{proposition}[Contravariant metric]
+		The contravariant metric is a \textit{doubly contravariant tensor}. The proof follows from \eqref{eq:210}:
+		\begin{equation}
+		g^{i^\prime j^\prime} = \vb{e}^{i^\prime} \cdot \vb{e}^{j^\prime} = J\indices{^{i^\prime}_{i}} J\indices{^{j^\prime}_{j}} \vb{e}^{i} \cdot \vb{e}^{j} = J\indices{^{i^\prime}_{i}} J\indices{^{j^\prime}_{j}} g^{ij}. \qed
+		\end{equation}
+	\end{proposition}
+	\begin{proposition}[Partial derivatives]
+		Given a scalar field $ F(x) $, the collection of partial derivatives $ \pdv*{F}{x^{i}} $ transform as covariant tensor components.
+		\[
+		\pdv{F}{x^{i^\prime}} = \pdv{F}{x^{i}} \pdv{x^{i}}{x^{i^\prime}} = J\indices{^{i}_{i^\prime}} \pdv{F}{x^{i}}. \qed
+		\]
+	\end{proposition}
+	\begin{proposition}[Second derivatives]
+		Given a scalar field $ F $, the collection of second derivatives $ \pdv*{^2F}{x^{i}\partial x^{j}} $ \textit{do not} transform as a second order tensor.
+		\begin{align*}
+		\pdv{^2 F}{x^{i^\prime}\partial x^{j^\prime}} &= \pdv{}{x^{i^\prime}}\qty(\pdv{F}{x^{j^\prime}}) = \pdv{x^{i}}{x^{i^\prime}}\pdv{}{x^{i}} \qty(\pdv{F}{x^{j^\prime}}) = \pdv{x^{i}}{x^{i^\prime}}\pdv{}{x^{i}} \qty(\pdv{F}{x^{j}} \pdv{x^{j}}{x^{j^\prime}}) \\
+		&= J\indices{^{i}_{i^\prime}} J\indices{^{j}_{j^\prime} }\pdv{^2 F}{x^{i}\partial x^{j}} + J\indices{^{i}_{i^\prime}} \pdv{F}{x^{j}} \pdv{}{x^{i}}\qty(\pdv{x^{j}}{x^{j^\prime}}) \neq J\indices{^{i}_{i^\prime}} J\indices{^{j}_{j^\prime}} \pdv{^2 F}{x^{i} \partial x^{j}},
+		\end{align*}
+		since there exists transformations $ x \to x^\prime $ such that
+		\[
+		\pdv{}{x^{i}}\qty(\pdv{x^{j}}{x^{j^\prime}}) = \pdv{^2 x^{i}}{x^{k^\prime} \partial x^{j^\prime}}\pdv{x^{k^\prime}}{x^{i}} \neq 0.
+		\]
+		the second term is not necessarily zero. \qed
+	\end{proposition}
+	\begin{proposition}[Derivative of tensor field]
+		Given a covariant (or contravariant) tensor field $ T_{i} $, the variant $ \pdv*{T_{i}}{x^{j}} $ is \textit{not a tensor}.
+		\begin{align*}
+		\pdv{T_{i^\prime}}{x^{j^\prime}} = \pdv{}{x^{j^\prime}} \qty( J\indices{^{i}_{i^\prime}} T_{i}) &= \pdv{}{x^{j^\prime}} \qty(\pdv{x^{i}}{x^{i^\prime}}) T_{i} + J\indices{^{i}_{i^\prime}} \pdv{x^{j}}{x^{j^\prime}} \pdv{T_{i}}{x^{j}} \\
+		&= \pdv{^2 x^{i}}{x^{j^\prime} \partial x^{i^\prime}} T_{i} + J\indices{^{i}_{i^\prime}} J\indices{^{j}_{j^\prime}} \pdv{T_{i}}{x^{j}} \neq J\indices{^{i}_{i^\prime}} J\indices{^{j}_{j^\prime}} \pdv{T_{i}}{x^{j}}. \qed
+		\end{align*}
+	\end{proposition}
+	\begin{proposition}[Skew-symmetric part of above]
+		The skew-symmetric part $ S_{ij} $
+		\[
+		S_{ij} = \pdv{T_{i}}{x^{j}} - \pdv{T_{j}}{x^{i}}
+		\]
+		of the variant $ \pdv*{T_{i}}{x^{j}} $ is a tensor.
+		\begin{align*}
+		S_{i^\prime j^\prime} &= \pdv{^2 x^{i}}{x^{j^\prime} \partial x^{i^\prime}} T_{i} + J\indices{^{i}_{i^\prime}} J\indices{^{j}_{j^\prime}} \pdv{T_{i}}{x^{j}} - \pdv{^2 x^{j}}{x^{j^\prime} \partial x^{i^\prime}} T_{j} - J\indices{^{i}_{i^\prime} }J\indices{^{j}_{j^\prime}} \pdv{T_{j}}{x^{i}} \\
+		&= J\indices{^{i}_{i^\prime}} J\indices{^{j}_{j^\prime}} \qty(\pdv{T_{i}}{x^{j}} - \pdv{T_{j}}{x^{i}}) 
+		= J\indices{^{i}_{i^\prime}} J\indices{^{j}_{j^\prime}} S_{ij}. \qed
+		\end{align*}
+	\end{proposition}
+	\subsection{Properties of tensors}
+	\begin{proposition}[Linear combinations of tensors]
+		A linear combination of tensors is a tensor, provided only tensors of the same type are summed. To illustrate, consider the linear combination of two contravariant tensors,
+		\[
+		A^{i} = c_{1} B^{i} + c_{2} C^{i} \implies A^{i^\prime} = c_1 B^{i^\prime} + c_2 C^{i^\prime} = c_1 J\indices{^{i^\prime}_{i}} B^{i} + c_2 J\indices{^{i^\prime}_{i}} C^{i} = J\indices{^{i^\prime}_{i}} \qty(c_1 B^{i} + c_2 C^{i}) = J\indices{^{i^\prime}_i} A^{i}.
+		\]
+		The generalization to higher order tensors is trivial. This also shows that the sum of different type of tensor components, such as $ B^{i} + C_{i} $ doesn't really make sense. The resulting object is not a tensor.
+	\end{proposition}
+	\begin{proposition}[Tensor product]
+		The tensor product of tensors is a tensor. Consider the following example:
+		\[
+		A\indices{^i_{j k l}}=B\indices{^i_{j}} C_{k l} \implies A\indices{^{i^\prime}_{j^{\prime} k^{\prime} l^{\prime}}}=B\indices{^{i^\prime}_{j^{\prime}}} C_{k^{\prime} l^{\prime}}=B\indices{^i_{j}} C_{k l} J\indices{^{i^\prime}_{i}} J\indices{^j_{j^{\prime}}} J\indices{^k_{k^{\prime}}} J\indices{^l_{l^{\prime}}}=A\indices{^i_{j k l}} J\indices{^{i^\prime}_{i}} J\indices{^j_{j^{\prime}}} J\indices{^k_{k^{\prime}}} J\indices{^l_{l^{\prime}}}.
+		\]
+		Similarly, the dot product of two vector-valued tensors is a tensor, and the product of a scalar-valued tensor with a vector-valued tensor is a tensor.
+	\end{proposition}
+	\begin{proposition}[Contraction theorem]
+		Contraction of a tensor is a tensor. Consider the example $ T_{k} = S\indices{^{i}_{ik}} $, where $ S\indices{^{i}_{jk}} $ is a tensor of order three. We have
+		\[
+		S\indices{^{i^{\prime}}_{j^{\prime} k^{\prime}}}=S\indices{^i_{j k} } J\indices{^{i^{\prime}}_i} J\indices{^j_{j^{\prime}}} J\indices{^k_{k^{\prime}} }
+		\implies S\indices{^{i^{\prime}}_{i^{\prime} k^{\prime}}} 
+		= S\indices{^i_{j k}}  J\indices{^{i^\prime}_{i}} J\indices{^j_{i^{\prime}}} J\indices{^k_{k^{\prime}} }
+		= S\indices{^i_{j k}} \delta\indices{^j_{i}} J\indices{^k_{k^{\prime}}} 
+		= S\indices{^i_{i k}} J\indices{^k_{k^{\prime}}},
+		\]
+		hence we have
+		\[
+		T_{k^{\prime}}=T_{k} J\indices{^k_{k^{\prime}}}
+		\]
+		and so the proposition holds. \qed
+	\end{proposition}
+	\begin{corollary}[Contraction of Kronecker delta]
+		The contraction $ \delta\indices{^{i}_{i}} $ has no free indices so it is a tensor of order zero, and an invariant. Its value equals the number of dimensions.
+	\end{corollary}
+	\example Suppose $ \vb{V}_{ij} $ is a tensor with vector elements. The components $ V\indices{^{k}_{ij}} $ of $ \vb{V}_{ij} $ with respect to the covariant basis $ \vb{e}_{k} $ is a tensor:
+	\[
+	V\indices{^{k^\prime}_{i^\prime j^\prime}} = \vb{e}^{k^\prime} \cdot \vb{V}_{i^\prime j ^\prime}
+	= J\indices{^{k^\prime}_{k}}  J\indices{^{i}_{i^\prime}} J\indices{^{j}_{j^\prime}}  \vb{e}^{k} \cdot\vb{V}_{ij}
+	=  J\indices{^{k^\prime}_{k}}  J\indices{^{i}_{i^\prime}} J\indices{^{j}_{j^\prime}}  V\indices{^{k}_{ij}}.
+	\]
+	\proposition If a variant transforms as a tensor \textit{from a particular} coordinate system $ x^{\alpha} $ \textit{to any} coordinate system $ x^{i} $, then it is a tensor. In other words,
+	\[
+	T\indices{^{i}_{j}} = J\indices{^{i}_{\alpha}} J\indices{^{\beta}_{j}} T\indices{^{\alpha}_{\beta}} \implies T\indices{^{i^\prime}_{j^\prime}} = J\indices{^{i^\prime}_{i}} J\indices{^{j}_{j^\prime}} T\indices{^{i}_{j}},
+	\]
+	where we note that in the first expression $ T\indices{^{\alpha}_{\beta}} $ is restricted to the particular coordinate system $ x^{\alpha} $.
+	\proof First, we write $ T^{\alpha}_{\beta} $ in terms of $ T^{i}_{j} $,
+	\[
+	J\indices{^{j}_{\nu}} J\indices{^{\mu}_{i}} T\indices{^{i}_{j}} = J\indices{^{j}_{\nu}} J\indices{^{\mu}_{i}} J\indices{^{i}_{\alpha}} J\indices{^{\beta}_{j}} T\indices{^{\alpha}_{\beta}}
+	= \delta\indices{^{\mu}_{\alpha}} \delta\indices{^{\beta}_{\nu}} T\indices{^{\alpha}_{\beta}} = T\indices{^{\mu}_{\nu}}.
+	\]
+	From this, the proposition follows by direct substitution and applying the chain rule,
+	\[
+	T\indices{^{i^\prime}_{j^\prime}} = J\indices{^{\nu}_{j^\prime}} J\indices{^{i^\prime}_{\mu}} T\indices{^{\mu}_{\nu}}
+	= J\indices{^{\nu}_{j^\prime}} J\indices{^{i^\prime}_{\mu} } J\indices{^{j}_{\nu}} J\indices{^{\mu}_{i}} T\indices{^{i}_{j} }
+	= J\indices{^{i^\prime}_{i}} J\indices{^{j}_{j^\prime}} T\indices{^{i}_{j}}. \qed
+	\]
+	\subsection{Index juggling}
+	We've already seen an example of index juggling with the contravariant basis, see \eqref{eq:covbasis2}. In general, raising an index is the contraction of a lower index of a variant with the contravariant metric:
+	\begin{equation}
+		A^{i} = g^{ij} A_j.
+	\end{equation}
+	Similarly, lowering an index is the contraction of an upper index of a variant with the covariant metric:
+	\begin{equation}
+		A_{i} = g_{ij} A^{j}.
+	\end{equation}
+	More generally, indices of higher order tensors can be raised and lowered individually, for example:
+	\begin{equation}
+		T\indices{^{i}_{j}} = g^{ik}T_{kj} = g^{ik} g_{jl} T\indices{_k^{l}}.
+	\end{equation}
+	\begin{proposition}
+		Operations of raising and lowering indices are inverses of each other. This follows directly from the definition of the contravariant metric - we have:
+		\[
+		A_{i} = g_{ij} A^{j} = g_{ij} g^{jk} A_{k} = \delta\indices{^{k}_{i}} A_{k}. \qed
+		\]
+	\end{proposition}
+	\begin{proposition}
+		Contracted indices can be swapped invariantly, meaning
+		\[
+		A^{i} B_{i} = g^{ij} A_{j} g_{ik} B^{k} = \delta\indices{^{j}_{k}} A_{j} B^{k} = A_{j} B^{j}. \qed
+		\]
+	\end{proposition}
+	\begin{proposition}
+		Given a symmetric tensor $ T_{ij} = T_{ji} $, we have $ T\indices{^{i}_{j}} = T\indices{_{j}^{i}} $. Proved by direct computation:
+		\[
+		T\indices{^{i}_{j}} = g^{ik} T_{kj} = g^{ik} T_{jk} = T\indices{_{j}^{i}}. \qed
+		\]
+	\end{proposition}
+	\begin{corollary}[Metric tensor and Kronecker delta]
+		Objects related by index juggling are considered equivalent. From this point of view, the Kronecker symbol and the metric tensor are equivalent, since lowering upper index of $ \delta\indices{^{i}_{j}} $ yields the covariant metric tensor:
+		\[
+		\delta\indices{^{i}_{j}} g_{ik} = g_{jk}
+		\]
+		Similar relations are obtained by raising the lower index of $ \delta\indices{^{i}_{j}} $ and raising (lowering) one of the indices of the covariant (contravariant) metrics.
+	\end{corollary}
+	\par
+	For notatioal purposes, the metric tensor appearing in many tensor relations is omitted by the use of index juggling. An example is the dot product between two vectors $ \vb{U} $ and $ \vb{V} $:
+	\[
+	\vb{U} \cdot \vb{V} = g_{ij} U^{i} V^{j} = U_{j} V^{j}.
+	\]
+	\newpage
+	\section{Differentiation}
+	\subsection{Gradient of a scalar field}
+	\begin{definition}[Gradient - geometric]
+		Given a scalar field $ F $, the gradient $ \grad F $ is a vector field which, at any point, is directed in the direction of greatest increase in $ F $ with magnitude equal to the directional derivative of $ F $ in that direction.
+	\end{definition}
+	Note that this definition is \textit{geometric}. There is no reference to any system of coordinates, so we expect $ \grad{F} $ to be \textit{invariant}. We will obtain the correct definition for $ \grad{F} $ in two steps: constructing an invariant quantity and making sure that the invariant quantity reduces to the correct form in Cartesian coordinates.
+	
+	\begin{proposition}[Step 1: Invariance]
+		We need a tensor expression with no free indices. So, consider
+		\[
+		\grad{F} = \pdv{F}{x^{i}} \vb{e}^{i}.
+		\]
+		Is this invariant? Yes, obviously:
+		\[
+		(\grad{F})^\prime = \pdv{F}{x^{i^\prime}} \vb{e}^{i^\prime} = \jcb{i}{i^\prime} \pdv{F}{x^{i}} \jcb{i^\prime}{j} \vb{e}^{j} = \delta\indices{^{i}_{j}} \pdv{F}{x^{i}} \vb{e}^{j} 
+		= \pdv{F}{x^{i}} \vb{e}^{i} 
+		= \grad{F}. \qed 
+		\]
+	\end{proposition}
+	\begin{proposition}[Step 2: Cartesian expression]
+		Now that we have an invariant expression, it is a candidate for the gradient. If the expression reduces to the gradient in Cartesian coordinates, it will represent the gradient in any coordinate system since it is invariant. In cartesian coordinates the metric reduces to the Kronecker symbol, hence we have $ \vb{e}^{i} = \vb{e}_{i} $ so
+		\[
+		\grad{F} = \pdv{F}{x} \vb{\hat{x}} + \pdv{F}{y} \vb{\hat{y}} +\pdv{F}{z} \vb{\hat{z}}.
+		\]
+		This is the expression for the gradient in Cartesian coordinates, so we're done.
+	\end{proposition}
+	\begin{definition}[Gradient - tensor form]
+		The gradient of a scalar field $ f $ in coordinates $ x^{i} $ is
+		\begin{equation}
+			\grad{F} = \pdv{F}{x^{i}} \vb{e}^{i}.
+		\end{equation}
+	\end{definition}
+\subsection{Covariant derivative}
+Since the derivative $ \pdv*{}{x^{i}} $ of a tensor field is not a tensor, we cannot use it to define the divergence or the Laplacian. We need a new definition, which transforms as a tensor so that we can construct invariants from tensor fields. This new operation is called the \textit{covariant derivative.} 
+\subsubsection{Motivation}
+Consider a vector field $ \vb{V} $. Since it is an invariant $ (\vb{V}^\prime = \vb{V}) $, its partial derivatives with respect to coordinates $ x^{j} $ transform as a covariant tensor:
+\[
+\pdv{\vb{V}}{x^{j^\prime}} = \pdv{x^{j}}{x^{j^\prime}} \pdv{\vb{V}}{x^{j}} = \jcb{j}{j^\prime} \pdv{\vb{V}}{x^{j}}.
+\]
+Now, we express $ \vb{V} $ in terms of the covariant basis $ \vb{V} = V^{i} \vb{e}_{i} $. Differentiating with respect to $ x^{j} $ yields
+\[
+\pdv{\vb{V}}{x^{j}} 
+= \pdv{V^{i}}{x^{j}} \vb{e}_{i} + V^{i} \pdv{\vb{e}_{i}}{x^{j}}
+= \pdv{V^{i}}{x^{j}} \vb{e}_{i}  + V^{i} \Gamma^{k}_{ij} \vb{e}_{k}.
+\]
+Now, we factor out the $ \vb{e}_{i} $ by renaming contracted indices,
+\[
+\pdv{\vb{V}}{x^{j}} = \qty( \pdv{V^{i}}{x^{j}} + \Gamma^{i}_{jk} V^{k} )\vb{e}_{i} \equiv \nabla_{j} V^{i} \vb{e}_{i}.
+\]
+Since we know how $ \pdv*{\vb{V}}{x^{j}} $ transforms, we can immediately deduce the transformation rule for the right hand side:
+\[
+\qty(\nabla_{j} V^{i})^\prime \vb{e}_{i^\prime} = \jcb{i}{i^\prime} \qty(\nabla_{j} V^{i})^\prime \vb{e}_{i} = \jcb{j}{j^\prime} \nabla_{j} V^{i} \vb{e}_{i}.
+\]\[
+\implies \qty(\nabla_{j} V^{i})^\prime \equiv \nabla_{j^\prime} V^{i^\prime} = \jcb{j}{j^\prime} \jcb{i^\prime}{i} \nabla_{j} V^{i}.
+\]
+Hence, we see that the quantity $ \nabla_{j} V^{i} $ transforms as a mixed tensor of order two. Now, we repeat the same calculation for the covariant components $ V_{i} $,
+\[
+\pdv{\vb{V}}{x^{j}} = \pdv{}{x^{j}}\qty(V_{i} \vb{e}^{i}) = \pdv{V_{i}}{x^{j}} \vb{e}^{i} + V^{i} \pdv{\vb{e}^{i}}{x^{j}} = \pdv{V^{i}}{x^{j}} \vb{e}^{i} - V_{i} \Gamma ^{i}_{jk} \vb{e}^{k} = \qty[\pdv{V_{i}}{x^{j}} - \Gamma^{k}_{ij} V_{i}] \vb{e}^{i} \equiv \nabla_{j} V_{i} \vb{e}^{i}.
+\]
+Similarly, it is obvious that $ \nabla_{j} V_{i} $ transforms as a second rank covariant tensor. Finally, since the Christoffel symbol vanishes in Cartesian coordinates, $ \nabla_{j} $ simply reduces to partial differentiation. Now, we're in a position to define the covariant derivative.
+\subsubsection{Definitions of derivatives, divergence and Laplacian}
+\begin{definition}[Covariant derivative]
+	The covariant derivative of a contravariant tensor field $ T^{i} $ is
+	\begin{equation}
+	\nabla_{j} T^{i} \equiv \pdv{T^{i}}{x^{j}} + \Gamma^{i}_{jk} T^{k}.
+	\end{equation}
+	Similarly, the covariant derivative of a covariant tensor field $ T_{i} $ is
+	\begin{equation}
+	\nabla_{j} T_{i} \equiv \pdv{T_{i}}{x^{j}} - \Gamma^{k}_{ij} T_{k}.
+	\end{equation}
+\end{definition}
+\begin{definition}[Contravariant derivative]
+	The contravariant derivativer is defined by raising the index of the covariant derivative:
+	\begin{equation}
+	\nabla^{j} \equiv g^{jk} \nabla_{k}.
+	\end{equation}
+\end{definition}
+\begin{proposition}[Divergence]
+	The divergence of a vector field $ \vb{V} $ in terms of its components is simply
+	\begin{equation}
+	\div \vb{V} = \nabla_{i} V^{i} = \nabla^{i} V_{i}.
+	\end{equation}
+	This is because the divergence of a vector field must be invariant. It is defined in a coordinate free sense, at a point $ x^{i} $ as
+	\[
+	\div \vb{V} = \lim_{\Delta \tau \to 0} \frac{1}{\Delta \tau} \oint_\sigma \vb{V} \cdot \dd \boldsymbol{\sigma}.
+	\]
+	where $ \Delta \tau  $ is the volume enclosed by surface $ \sigma $ which surrounds the point $ x^{i} $. Since the definition is coordinate free, the divergence must be an invariant. Finally, we require that it evaluates to the correct form in Cartesian coordinates, which it does since $ \Gamma^{i}_{jk} \equiv 0 $ in Cartesian coordinates;
+	\[
+	\nabla_{i} V^{i} = \pdv{V^x}{x} + \pdv{V^{y}}{y} + \pdv{V^{z}}{z} = \div \vb{V}.
+	\]
+\end{proposition}
+\begin{proposition}[Laplacian]
+	The Laplacian of a scalar field is given, in terms of the covariant derivative, as
+	\[
+	\Delta F = g^{ij} \nabla_{i} \nabla_{j} F = \nabla^{i} \nabla_{i} F.
+	\]
+	Again, seeing why this is true is very simple. It is invariant, and it reduces to the correct Laplacian in Cartesian coordinates. That's it! The Laplacian must be invariant because, by definition it is the divergence of the gradient. Since both the divergence and the gradient have coordinate independent definitions, it follows that the Laplacian is also geometric.
+\end{proposition}
+\begin{definition}[Covariant derivative for higher order tensors]
+	We generalize the definition of the covariant derivative to higher order tensors - the rule is apparent from a mixed tensor $ T\indices{^{i}_{j}} $,
+	\begin{equation}
+		\nabla_{k} T\indices{^{i}_{j}}  
+		= \pdv{T\indices{^{i}_{j}}}{x^{k}} + \Gamma^{i}_{k\ell} T^{\ell}_{j} - \Gamma^{\ell}_{jk} T^{i}_{\ell}.
+	\end{equation}
+\end{definition}
+\subsubsection{Properties of the covariant derivative}
+\begin{proposition}
+	The covariant derivative of a contravariant vector $ \vb{V}^{i} $ transforms as a tensor. To see why, write the invariant $ \vb{V}^{i} \vb{e}_{i} $ and consider $ \pdv*{\vb{V}^{i} \vb{e}_{i}}{x^{j}} $.
+\end{proposition}
+\begin{proposition}[Commutativity]
+	Covariant derivatives commute with each other, so we have
+	\[
+	\qty(\nabla_{\ell} \nabla_{k} - \nabla_{k} \nabla_{\ell}) T^{i} \equiv 0.
+	\]
+\end{proposition}
+\proof Since the resulting derivative is a tensor, if it vanishes identically in one coordinate system it must vanish in all coordinate systems. So, we show that it vanishes identically in Cartesian coordinates, where $ \nabla_k = \pdv*{}{x^{k}} $,
+\[
+\qty(\nabla_{\ell} \nabla_{k} - \nabla_{k} \nabla_{\ell}) T^{i} = \pdv{^2 T^{i}}{x^{k} x^{\ell}} - \pdv{^2 T^{i}}{x^{\ell} x^{k}} \equiv 0. \qed
+\]
+\proposition[Distributivity] This property follows trivially from the fact that the covariant derivative is linear in all its arguments,
+\[
+\nabla_{k} \qty(T\indices{^{i}_{j}} + S\indices{^{i}_{j}}) = \nabla_{k} T\indices{^{i}_{j}} + \nabla_{k} S\indices{^{i}_{j}}.
+\] 
+\proposition[Product rule] The covariant derivative obeys the product rule for derivatives,
+\begin{align*}
+\nabla_{k} \qty(T^{i} U_{j}) 
+&= \pdv{\qty(T^{i}U_{j})}{x^{k}} + \Gamma^{i}_{mk} T^{m} U_{j} - \Gamma^{m}_{jk} T^{i} U_{m} \\
+&= T^{i} \qty[ \pdv{U_{j}}{x^{k}} - \Gamma^{m}_{jk} U_{m} ] + U_{j} \qty[ \pdv{T^{i}}{x^{k}} + \Gamma^{i}_{mk} T^{m} ] \\
+&= T^{i} \nabla_{k} U_{j} + U_{j} \nabla_{k} T^{i}.
+\end{align*}
+\proposition[Product rule - vectors] The product rule applies with vector dot product, the proof is identical as above.
+\[
+\nabla_{k} \qty(\vb{T}^{i} \cdot \vb{U}_{j}) = \vb{T}^{i} \cdot \nabla_{k} \vb{U}_{j} + \vb{U}_{j} \cdot \nabla_{k} \vb{T}^{i}.
+\]
+\proposition[Metrinilic property] The bases $ \vb{e}_{i} $ and $ \vb{e}^{i} $ and the metrics $ g_{ij} $, $ g^{ij} $ and $ \delta\indices{^{i}_{j}} $ \textit{all vanish under} $ \nabla_{k} $.
+\proof First, we show $ \nabla_{k} \vb{e}_{i} \equiv 0 $ and $ \nabla_{k} \vb{e}^{i} \equiv 0 $.
+\begin{align*}
+\nabla_{k} \vb{e}_{i} &= \pdv{\vb{e}_{i}}{x^{k}} - \Gamma^{m}_{ik} \vb{e}_{m} 
+= \Gamma^{j}_{ik} \vb{e}_{j} - \Gamma^{m}_{ik} \vb{e}_{m} \equiv 0, \\
+\nabla_{k} \vb{e}^{i} &= \pdv{\vb{e}^{i}}{x^{k}} + \Gamma^{i}_{mk} \vb{e}^{m} 
+= - \Gamma^{i}_{jk} \vb{e}^{j} + \Gamma^{i}_{mk} \vb{e}^{m}  \equiv 0.
+\end{align*}
+Then, we simply use the product rule:
+\begin{align*}
+\nabla_{k} g_{ij} &= \nabla_{k} \qty(\vb{e}_{i} \cdot \vb{e}_{j}) = \vb{e}_{i} \cdot \nabla_{k} \vb{e}_{j} + \vb{e}_{j} \cdot \nabla_{k} \vb{e}_{i} \equiv 0, \\
+\nabla_{k} g^{ij} &= \nabla_{k} \qty(\vb{e}^{i} \cdot \vb{e}^{j}) = \vb{e}^{i} \cdot \nabla_{k} \vb{e}^{j} + \vb{e}^{j} \cdot \nabla_{k} \vb{e}^{i} \equiv 0, \\
+\nabla_{k} \delta\indices{^{i}_{j}} &= \nabla_{k} \qty(\vb{e}^{i} \cdot \vb{e}_{j}) = \vb{e}^{i} \cdot \nabla_{k} \vb{e}_{j} + \vb{e}_{j} \cdot \nabla_{k} \vb{e}^{i} \equiv 0. \qed
+\end{align*}
+\proposition From the metrinilic property, the relation
+\[
+\pdv{g_{ij}}{x^{k}} = \Gamma_{ijk} + \Gamma_{jik}
+\]
+follows. This is obvious:
+\[
+0 = \nabla_{k} g_{ij} = \pdv{g_{ij}}{x^{k}} - \Gamma^{m}_{ik} g_{jm} - \Gamma^{m}_{jk} g_{im}
+= \pdv{g_{ij}}{x^{k}} - \Gamma_{jik} - \Gamma_{ijk}. \qed
+\]
+Similarly, we have
+\[
+\pdv{g^{ij}}{x^{k}} = - \Gamma^{ij}_{k} - \Gamma^{ji}_{k}.
+\]
+\proposition[Index juggling] Thanks to the metrinilic property, we can juggle indices across the covariant derivative, meaning
+\[
+S_{i} = \nabla_{k} T_{i} \Longleftrightarrow S^{i} = \nabla_{k} T^{i}.
+\]
+\proof We contract both sides by $ g^{im} $, renaming the index $ i \to m $:
+\[
+S^{i} = g^{im} S_{m} = g^{im} \nabla_{k} T_{m} = \nabla_{k} \qty(g^{im} T_{m}) - T_{m} \nabla_{k} g^{im} = \nabla_{k} \qty(g^{im} T_{m}) = \nabla_{k} T^{i}.
+\]
+\proposition[Index juggling] Contracted indices can exchange flavours across the covariant derivative, meaning
+\[
+S^{i} \nabla_{k} T_{i} = S_{i} \nabla_{k} T^{i}.
+\]
+\proof We simply raise and lower the indices and use the product rule:
+\[
+S^{i} \nabla_{k} T_{i} = g^{i\ell} S_{\ell} \nabla_{k} \qty(g_{im} T^{m}) = g^{i\ell} S_{\ell} \qty[ g_{im} \nabla_{k} T^{m} + T^{m} \nabla_{k} g_{im} ] = g^{i\ell} S_{\ell} g_{im} \nabla_{k} T^{m} = \delta\indices{^{\ell}_{m}} S_{\ell} \nabla_{k} T^{m} = S_{m} 
+\]
+\proposition[Contraction commutativity] The covariant derivative commutes with contraction. This means, in the expression
+\[
+\nabla_{k} T^{i}_{ij},
+\]
+we may first apply the contraction and define $ S_{j} = T^{i}_{ij} $ and then apply $ \nabla_{k} $, or we may first apply $ \nabla_{k} $ to the tensor $ T^{r}_{ij} $ and then apply the contraction of $ r $ and $ i $ indices to the result.
+\proof We simply write the expression with the contraction,
+\[
+\nabla_{k} T^{i}_{ij} = \pdv{T^{i}_{ij}}{x^{k}} + \underbrace{\Gamma^{i}_{km} T^{m}_{ij} - \Gamma^{m}_{ki} T^{i}_{mj}}_{\equiv 0} - \Gamma^{m}_{kj} T^{i}_{im} 
+= \pdv{T^{i}_{ij}}{x^{k}} - \Gamma^{m}_{kj} T^{i}_{im} 
+= \nabla_{k} S_{j}. \qed
+\]
+
+
+\end{document}
+
+
+
+
+
+
+
+
+We motivate the covariant derivative by first noting that it should reduce to $ \pdv*{}{x^{i}} $ in Cartesian coordinates. So, without loss of generality we may assume a form of:
+\[
+\nabla_{i}T^{j} = \pdv{T^{j}}{x^{i}} + A\indices{^{j}_{i}}.
+\]
+Now, we require that this object transforms as a tensor, meaning
+\[
+\nabla_{i^\prime}T^{j^\prime} = \jcb{j^\prime}{j}\jcb{i}{i^\prime} \nabla_{i}T^{j} .
+\]
+We may construct $ \nabla_{i^\prime}T^{j^\prime} $ explicitly as
+\[
+\nabla_{i^\prime}T^{j^\prime} = \pdv{T^{j^\prime}}{x^{i^\prime}} + A\indices{^{j^\prime}_{i^\prime}} = \jcb{i}{i^\prime}\pdv{}{x^{i}}\qty(\jcb{j^\prime}{j}T^{j}) + A\indices{^{j^\prime}_{i^\prime}} 
+= \jcb{i}{i^\prime} \jcb{j^\prime}{j} \pdv{T^{j}}{x^{i}} + \jcb{i}{i^\prime} T^{j} \pdv{}{x^{i}}\qty(\jcb{j^\prime}{j}) + A\indices{^{j^\prime}_{i^\prime}}.
+\]
+Now, imposing the transformation condition we obtain a relation telling us how $ A\indices{^{j}_{i}} $ transforms:
+\[
+A\indices{^{j^\prime}_{i^\prime}} = \jcb{i}{i^\prime} \jcb{j^\prime}{j} A\indices{^{j}_{i}} - \jcb{i}{i^\prime} T^{j} \pdv{}{x^{i}}\qty(\jcb{j^\prime}{j})
+\]
+\textbf{Aside:} Let's look at how the Christoffel symbol transforms and hope that it gives us something that resembles the transformation above \textit{(it will)}. The motivation for this is the second term including the derivative of the Jacobian. Since we want two free indices, and need a $ T^{j} $, let's look at the contraction $ \Gamma^{k}_{ij} T^{i} $ as an ansatz.
+\begin{align*}
+\Gamma^{k^\prime}_{i^\prime j ^\prime } T^{i ^\prime} 
+&= - T^{i^\prime} \vb{e}_{i^\prime} \cdot \pdv{\vb{e}^{k^\prime}}{x^{j^\prime}} \\
+&= - T^{i} \vb{e}_{i} \cdot \jcb{j}{j^\prime} \pdv{}{x^{j}} \qty(\jcb{k^\prime}{k} \vb{e}^{k}) \\
+&= - \jcb{j}{j^\prime} T^{i} \vb{e}_{i} \cdot  \qty[ \vb{e}^{k} \pdv{\jcb{k^\prime}{k}}{x^{j}} + \jcb{k^\prime}{k} \pdv{\vb{e}^{k}}{x^{j}}] \\
+&= - \jcb{j}{j^\prime} \jcb{k^\prime}{k} \vb{e}_{i} \cdot \pdv{\vb{e}^{k}}{x^{j}} T^{i} - \jcb{j}{j^\prime} T^{i} \delta\indices{^{k}_{i}} \pdv{\jcb{k^\prime}{k}}{x^{j}} \\
+&= \jcb{j}{j^\prime} \jcb{k^\prime}{k} \Gamma^{k}_{ij} T^{i} - \jcb{j}{j^\prime} T^{k} \pdv{\jcb{k^\prime}{k}}{x^{j}}.
+\end{align*}
+Now, we see that letting $ A\indices{^{j}_{i}} = \Gamma^{j}_{ik} T^{k} $ gives us the required transformation rule. Hence, we arrive at the definition for the covariant derivative:
+\begin{definition}[Covariant derivative]
+	
+\end{definition}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
