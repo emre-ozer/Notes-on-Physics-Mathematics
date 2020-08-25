@@ -1,0 +1,77 @@
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, mathrsfs}
+\usepackage{amssymb}
+\usepackage{enumerate}
+\usepackage{tikz}
+\usepackage{tikz-3dplot}
+\usepackage{tensor}
+\usepackage{extarrows}
+\usepackage[italicdiff]{physics}
+\usepackage{amsfonts}
+\usepackage{graphicx}
+\usepackage{tabularx}
+\usepackage[left = 3.5cm, right = 3.5cm, top=3cm, bottom=3cm]{geometry}
+\usepackage{hyperref, color}
+\definecolor{burgundy}{rgb}{0.5, 0.0, 0.13}
+\hypersetup{
+    colorlinks=false,
+    linktoc=all,     %set to all if you want both sections and subsections linked
+    %allcolors=burgundy,
+}
+\usepackage{mathtools}
+\newcommand{\defeq}{\vcentcolon=}
+\newcommand{\overbar}[1]{\mkern 1.5mu\overline{\mkern-1.5mu#1\mkern-1.5mu}\mkern 1.5mu}
+\newcommand{\infint}{\int_{-\infty}^{\infty}}
+\numberwithin{equation}{section}
+
+\usepackage{wrapfig}
+\usepackage{amsthm}
+
+%\theoremstyle{definition}
+\newtheorem*{law}{Law}
+\newtheorem*{definition}{Definition}
+\newtheorem*{proposition}{Proposition}
+\newtheorem*{theorem}{Theorem}
+\newtheorem*{example}{Example}
+\newtheorem*{corollary}{Corollary}
+\newtheorem*{lemma}{Lemma}
+\newtheorem*{note}{Note}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+
+
+\usetikzlibrary{arrows.meta}
+\usetikzlibrary{decorations.markings}
+\usetikzlibrary{decorations.pathmorphing}
+\usetikzlibrary{positioning}
+\usetikzlibrary{fadings}
+\usetikzlibrary{intersections}
+\usetikzlibrary{cd}
+\usetikzlibrary{calc}
+
+\tikzset{>={Latex[length=2mm]}}
+
+\tikzset{
+    set arrow inside/.code={\pgfqkeys{/tikz/arrow inside}{#1}},
+    set arrow inside={end/.initial=>, opt/.initial=},
+    /pgf/decoration/Mark/.style={
+        mark/.expanded=at position #1 with
+        {
+            \noexpand\arrow[\pgfkeysvalueof{/tikz/arrow inside/opt}]{\pgfkeysvalueof{/tikz/arrow inside/end}}
+        }
+    },
+    arrow inside/.style 2 args={
+        set arrow inside={#1},
+        postaction={
+            decorate,decoration={
+                markings,Mark/.list={#2}
+            }
+        }
+    },
+}
+\def\centerarc[#1](#2)(#3:#4:#5)% Syntax: [draw options] (center) (initial angle:final angle:radius)
+    { \draw[#1] ($(#2)+({#5*cos(#3)},{#5*sin(#3)})$) arc (#3:#4:#5); }
+    
+    
+\tdplotsetmaincoords{60}{110}
