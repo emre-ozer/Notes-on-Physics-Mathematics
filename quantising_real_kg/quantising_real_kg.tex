@@ -1,0 +1,407 @@
+\documentclass{article}
+\setcounter{section}{-1}
+\input{note_header.tex}
+\input{emre_header.tex}
+\title{Quantising the Real Klein-Gordon Field}
+\date{}
+\begin{document}
+\maketitle
+\tableofcontents
+\section{Conventions}
+Work in natural units $ c = \hbar = 1 $. Denote four vector $ a^{\mu} = (a^{0}, a^{1}, a^{2}, a^{3})  $ and three vector $ \vec{a} = (a^{1}, a^{2}, a^{3}) $. Use Minkowski metric:
+\[
+	\eta_{\mu \nu} = \mqty(\dmat{+1,-1,-1,-1}).
+\]
+\section{Classical Field Theory}
+\subsection{Equation of motion}
+Let $ \phi = \phi(t, \vec{x}) $ be a real scalar field. The Klein-Gordon Lagrangian (density) is
+\begin{equation}
+	\mathscr{L} = \frac{1}{2} \partial_{\mu} \phi \, \partial^{\mu} \phi - \frac{1}{2} m^{2} \phi^{2}.
+\end{equation}
+The action over some domain $ \Omega \subset \mathbb{R}^4 $ is
+\begin{equation}
+	\mathcal{S}(\Omega) = \int_{\Omega} \dd[4]{x} \mathscr{L}.
+\end{equation}
+Varying the action subject to $ \eval{\delta \phi}_{\partial \Omega} = 0 $ yields
+\begin{align}
+	\begin{split}
+		\delta \mathcal{S}(\Omega) &= \int_\Omega \dd[4]{x} \qty(\partial^{\mu} \phi \, \partial_{\mu} (\delta \phi) - m^{2} \phi \, \delta \phi) \\
+		&= \int_\Omega \dd[4]{x} \delta \phi \qty(-\partial_{\mu} \partial^{\mu} \phi - m^{2} \phi) + \int_\Omega \dd[4]{x} \partial_{\mu} \qty( \partial^{\mu} \phi \, \delta \phi) \\
+		&= -\int_\Omega \dd[4]{x} \delta \phi \qty(\Box + m^{2}) \phi + \int_{\partial \Omega} \dd{S_{\mu}} \partial^{\mu} \phi \, \delta \phi.
+	\end{split}
+\end{align}
+Integral over $ \partial \Omega $ evaluates to zero due to condition on $ \delta \phi $. This yields the equation of motion:
+\begin{equation}
+	\qty(\Box + m^{2}) \phi = 0.
+\end{equation}
+\subsection{Noether's theorem}
+Define a \textit{continuous symmetry} of the Lagrangian as a transformation 
+\begin{equation} \label{noether1}
+	x^{\mu} \longmapsto \overbar{x}^{\mu} = x^{\mu} + F^{\mu}(x)
+\end{equation}
+for which (in the active picture)
+\begin{equation} \label{noether2}
+	\mathscr{L}(x) \longmapsto \overbar{\mathscr{L}}(x) = \mathscr{L}(x) + \partial_{\mu} X^{\mu}(x)
+\end{equation}
+where $ F^{\mu}, X^{\mu} $ are infinitesimal. In words, the Lagrangian transforms as a total derivative.
+\par
+Noether's theorem states that for each continuous symmetry of the Lagrangian, there exists a conserved current $ j^{\mu} $ so that $ \partial_{\mu} j^{\mu} = 0 $.
+\begin{proof}
+	For our purposes, assume a Lagrangian of the form $ \mathscr{L} = \mathscr{L}(\phi, \partial_{\mu} \phi) $. Then, apply transformation given by equation \eqref{noether1} \textit{actively} to the field $ \phi $:
+	\begin{equation}
+		\phi(x) \longmapsto \overbar{\phi} (x^{\mu}) = \phi(x^{\mu}-F^{\mu}) = \phi(x) + \Delta \phi,
+	\end{equation}
+	where $ \Delta \phi = - F^{\mu} \partial_{\mu} \phi $. Now, take $ \phi $ to be a solution to the equations of motion and look at the variation to the action over arbitrary $ \Omega $:
+	\begin{align} \label{noether3}
+		\begin{split}
+			\delta \mathcal{S}(\Omega) &= \int_{\Omega} \dd[4]{x} \qty(\Delta \phi \pdv{\mathscr{L}}{\phi} + (\partial_{\mu} \Delta \phi) \pdv{\mathscr{L}}{(\partial_{\mu} \phi)}) \\
+			&= \int_\Omega \dd[4]{x} \Delta \phi \qty(\pdv{\mathscr{L}}{\phi} - \partial_{\mu} \pdv{\mathscr{L}}{(\partial_{\mu} \phi)}) + \int_\Omega \dd[4]{x} \partial_{\mu} \qty(\pdv{\mathscr{L}}{(\partial_{\mu} \phi)} \Delta \phi) \\
+			&= \int_\Omega \dd[4]{x} \partial_{\mu} \qty(\pdv{\mathscr{L}}{(\partial_{\mu} \phi)} \Delta \phi).
+		\end{split}
+	\end{align}
+	Equivalently, we can calculate $ \delta \mathcal{S}(\Omega) $ directly due to the variation of the Lagrangian given by equation \eqref{noether2}:
+	\begin{equation} \label{noether4}
+		\delta \mathcal{S}(\Omega) = \int_\Omega \dd[4]{x} \partial_{\mu} X^{\mu}.
+	\end{equation}
+	Combining equations \eqref{noether3} and \eqref{noether4}, and noting that $ \Omega $ is arbitrary, yields
+	\begin{gather} \label{noethercurrent}
+		\partial_{\mu} \qty(\pdv{\mathscr{L}}{(\partial_{\mu} \phi)} \Delta \phi - X^{\mu}) = 0 
+		\implies j^{\mu} = \pdv{\mathscr{L}}{(\partial_{\mu} \phi)} \Delta \phi - X^{\mu}.
+	\end{gather}
+	This completes the proof.
+\end{proof}
+Given some conserved current $ j^{\mu} $, the quantity
+\begin{equation}
+	Q = \int_{\mathbb{R}^{3}} \dd[3]{\vec{x}} j^{0}
+\end{equation}
+is conserved, since
+\begin{equation}
+	\dv{Q}{t} = \int_{\mathbb{R}^{3}} \dd[3]{\vec{x}} \pdv{j^{0}}{t} = -\int_{\mathbb{R}^{3}} \dd[3]{\vec{x}} \div{\vec{j}} = 0,
+\end{equation}
+assuming $ \vec{j}(t, \abs{\vec{x}} \to \infty) = 0 $.
+\subsubsection{Energy-momentum tensor}
+Consider a translation $ \overbar{x}^{\mu} = x^{\mu} - a^{\mu} $ for some constant $ a^{\mu} $. Then, the field and the Lagrangian transform as
+\begin{gather}
+	\overbar{\mathscr{L}}(x) = \mathscr{L}(x^{\mu} + a^{\mu}) = \mathscr{L}(x) + a^{\mu} \partial_{\mu} \mathscr{L}, \\
+	\overbar{\phi}(x) = \phi(x^{\mu} + a^{\mu}) = \phi(x) + a^{\mu} \partial_{\mu} \phi.
+\end{gather}
+By equation \eqref{noethercurrent}, the conserved current for the Klein-Gordon Lagrangian is
+\begin{equation}
+	j^{\mu} = \partial^{\mu} \phi \, a^{\nu} \partial_{\nu} \phi - a^{\mu} \mathscr{L} = a^{\nu} \qty(\partial^{\mu} \phi \, \partial_{\nu} \phi - \delta\indices{^{\mu}_{\nu}} \mathscr{L}).
+\end{equation}
+This is actually 4 conserved currents in disguise, one for each translation. It is natural to define the \textit{energy-momentum tensor} so that
+\begin{equation}
+	j^{\mu} = a^{\nu} T\indices{^{\mu}_{\nu}} \implies T^{\mu\nu} = \partial^{\mu} \phi \, \partial^{\nu} \phi - \eta^{\mu \nu} \mathscr{L}.
+\end{equation}
+We recognise the conserved charges associated with time and space translations as energy and momentum respectively:
+\begin{gather} \label{hamiltonian1}
+	H = \int \dd[3]{\vec{x}} T^{00} = \frac{1}{2}  \int\dd[3]{\vec{x}} \qty(\dot{\phi}^{2} + \abs{\grad{\phi}}^2 + m^{2} \phi^{2}), \\
+	P^{j} = \int \dd[3]{\vec{x}} T^{0j} = - \int \dd[3]{\vec{x}} \dot{\phi} \, \partial_{j} \phi.
+\end{gather}
+\subsection{Hamiltonian formalism}
+Define canonical field momentum density $ \pi(t, \vec{x}) $ as:
+\begin{equation}
+	\pi(t, \vec{x}) = \pdv{\mathscr{L}}{\dot{\phi}(t,\vec{x})}.
+\end{equation}
+For Klein-Gordon, $ \pi(t,\vec{x}) = \dot{\phi}(t,\vec{x}) $. We may now rewrite the conserved charge associated with time translation given by equation \eqref{hamiltonian1} formally as the Hamiltonian:
+\begin{equation}
+	H = \int \dd[3]{\vec{x}} \mathscr{H} = \frac{1}{2} \int \dd[3]{\vec{x}} \qty(\pi^{2} + \abs{\nabla \phi}^{2} + m^{2} \phi^{2}),
+\end{equation}
+where $ \mathscr{H} $ is the \textit{Hamiltonian density}, given in general by
+\begin{equation}
+	\mathscr{H}(\phi, \pi) = \pi \dot{\phi} - \mathscr{L}.
+\end{equation}
+\subsubsection{Equations of motion}
+The action is now a functional of $ \phi $ and $ \pi $:
+\begin{equation}
+	\mathcal{S} = \int \dd[4]{x} \qty(\pi \dot{\phi} - \mathscr{H}) = \int \dd{t} \qty(\qty[\int \dd[3]{\vec{x}} \pi \dot{\phi}] - H).
+\end{equation}
+Note that
+\begin{equation}
+	\delta H = \int \dd[3]{x} \qty(\fdv{H}{\phi} \delta \phi + \fdv{H}{\pi} \delta \pi).
+\end{equation}
+We vary the action by $ \delta \phi $ and $ \delta \pi $:
+\begin{align}
+	\begin{split}
+		\delta \mathcal{S} &= \int \dd[4]{x} \qty(\delta \pi \dot{\phi} + \pi \partial_{t} \delta \phi) - \int \dd{t} \delta H \\
+		&= \int \dd[4]{x} \qty[\delta \pi \qty(\dot{\phi} - \fdv{H}{\pi}) + \delta \phi \qty(-\dot{\pi} - \fdv{H}{\phi})] + \int \dd[3]{\vec{x}} \int \dd{t} \partial_{t} \qty(\pi \delta \phi)  = 0. 
+	\end{split}
+\end{align}
+Requiring $ \delta \phi $ to vanish at initial and final times yields Hamilton's equations of motion:
+\begin{equation}
+	\dot{\phi} = \fdv{H}{\pi}, \quad
+	\dot{\pi} = - \fdv{H}{\phi}.
+\end{equation}
+\subsubsection{Poisson brackets}
+In the continuum limit, functions on phase space $ f: (\vec{q},\vec{p}) \longmapsto (\vec{q},\vec{p}) $ become \textit{functionals} of the fields $ \pi(t, \vec{x}) $ and $ \phi(t, \vec{x}) $ where we integrate away the position degree of freedom. Consider one such functional $ F(t) = F[\phi, \pi] $. Its variation is
+\begin{equation}
+	\delta F[\phi, \pi] = \int \dd[3]{\vec{x}} \qty(\fdv{F}{\phi(x)} \delta \phi + \fdv{F}{\pi(x)} \delta \pi).
+\end{equation}
+Now, we motivate the definition of the Poisson bracket by requiring that
+\begin{equation}
+	\dot{F} = \{ F, H \}.
+\end{equation}
+in analogy to a system with finite degrees of freedom. Under the transformation
+\begin{equation}
+	\delta \phi = \dot{\phi}\, \delta t, \quad \delta \pi = \dot{\pi}\, \delta t,
+\end{equation}
+$ F $ varies as
+\begin{align}
+	\begin{split}
+		\delta F &= \int \dd[3]{\vec{x}} \qty(\fdv{F}{\phi} \dot{\phi} \, \delta t + \fdv{F}{\pi} \dot{\pi} \, \delta t) \\
+		&= \int \dd[3]{\vec{x}}  \qty(\fdv{F}{\phi} \fdv{H}{\pi} - \fdv{F}{\pi} \fdv{H}{\phi}) \, \delta t = \dot{F} \delta t.
+	\end{split}
+\end{align}
+This motivates the following definition for the Poisson bracket of two functionals $ F, G $:
+\begin{equation}
+	\qty{ F, G } = \int \dd[3]{\vec{x}} \qty(\fdv{F}{\phi} \fdv{G}{\pi} - \fdv{F}{\pi} \fdv{G}{\phi}).
+\end{equation}
+Note that writing the field and momentum density as
+\begin{equation}
+	\phi(t, \vec{x}) = \int\dd[3]{\vec{x}} \delta^{(3)}(\vec{x} - \vec{y}) \phi(t, \vec{y}), \qq{and} \pi(t, \vec{x}) = \int\dd[3]{\vec{x}} \delta^{(3)}(\vec{x} - \vec{y}) \pi(t, \vec{y}),
+\end{equation}
+it becomes clear that
+\begin{equation}
+	\fdv{\phi(t,\vec{x})}{\phi(t,\vec{y})} = \delta^{(3)} (\vec{x} - \vec{y}), \quad \fdv{\pi(t,\vec{x})}{\pi(t,\vec{y})} = \delta^{(3)}(\vec{x} - \vec{y})
+\end{equation}
+which imply the usual Poisson bracket structure
+\begin{align}
+	\{ \phi(t, \vec{x}), \phi(t, \vec{y}) \} &= 0, \\
+		\{ \pi(t, \vec{x}), \pi(t, \vec{y}) \} &= 0, \\
+			\{ \phi(t, \vec{x}), \pi(t, \vec{y}) \} &= \delta^{(3)}(\vec{x} - \vec{y}).
+\end{align}
+
+\subsubsection{Generators}
+We want to understand the following statement: \textit{conserved charges are the generators of their corresponding symmetries.}
+\par
+Consider a transformation
+\begin{equation}
+	x^{\mu} \longmapsto \overbar{x}^{\mu} = x^{\mu} - \epsilon \Delta x^{\mu}
+\end{equation}
+with $ \epsilon $ infinitesimal. This is a continuous symmetry if
+\begin{equation}
+	\mathscr{L}(x) \longmapsto \overbar{\mathscr{L}}(x) = \mathscr{L}(x^{\mu} + \epsilon \Delta x^{\mu}) = \mathscr{L} + \epsilon \partial_{\mu} X^{\mu} (\mathscr{L})
+\end{equation}
+for some function $ X^{\mu} $ of the Lagrangian. Note that the field and momentum density transform as
+\begin{gather}
+	\phi(x) \longmapsto \overbar{\phi}(x) = \phi(x^{\mu} + \epsilon \Delta x^{\mu}) = \phi(x) + \epsilon \Delta x^{\mu} \partial_{\mu} \phi \implies \Delta \phi = \Delta x^{\mu} \partial_{\mu} \phi, \\
+	\pi(x) \longmapsto \overbar{\pi} (x) = \pi (x^{\mu} + \epsilon \Delta x^{\mu}) = \pi (x) + \epsilon \Delta x^{\mu} \partial_{\mu} \pi \implies \Delta \pi = \Delta x^{\mu} \partial_{\mu} \pi.
+\end{gather}
+Recall the conserved current given by equation \eqref{noethercurrent}:
+\begin{equation}
+	j^{\mu} = \pdv{\mathscr{L}}{(\partial_{\mu} \phi)} \Delta x^{\nu} \partial_{\nu} \phi - X^{\mu},
+\end{equation}
+and the associated conserved charge:
+\begin{equation}
+	Q = \int \dd[3]{\vec{x}} j^{0} = \int \dd[3]{\vec{x}} \qty(\pi \Delta x^{\mu} \partial_{\mu} \phi - X^{0}).
+\end{equation}
+Now comes the interesting part of Noether's theorem: $ Q $ generates the symmetry it is associated with, in the sense that
+\begin{equation}
+	\{ \phi, Q \} = \Delta \phi, \qq{and} \{\pi, Q \} = \Delta \pi.
+\end{equation}
+This is truly an amazing statement. The conserved charge seems to throw away the three spatial components of the conserved current and also integrate out the $ \vec{x} $ dependence. Yet, it by itself contains all information about the transformation.
+\par
+Let's look at a physicist's proof of this. The Poisson brackets simplify:
+\begin{align}
+	\begin{split} \label{generator1}
+	\{\phi(t, \vec{x}), Q(t)\} &= \int \dd[3]{\vec{y}} \qty( \fdv{\phi(t,\vec{x})}{\phi(t,\vec{y})} \fdv{Q(t)}{\pi(t,\vec{y})} - \fdv{Q(t)}{\phi(t,\vec{y})} \fdv{\phi(t,\vec{x})}{\pi(t,\vec{y})}) \\
+	&= \int \dd[3]{\vec{y}} \delta^{(3)}(\vec{x} - \vec{y}) \fdv{Q(t)}{\pi(t,\vec{y})}  \\
+	&= \fdv{Q}{\pi(t, \vec{x})}.
+	\end{split}
+\end{align}
+Similarly,
+\begin{align}
+	\begin{split} \label{generator2}
+	\{\pi(t, \vec{x}), Q(t)\} &= \int \dd[3]{\vec{y}} \qty( \fdv{\pi(t,\vec{x})}{\phi(t,\vec{y})} \fdv{Q(t)}{\pi(t,\vec{y})} - \fdv{Q(t)}{\phi(t,\vec{y})} \fdv{\pi(t,\vec{x})}{\pi(t,\vec{y})}) \\
+	&= - \int \dd[3]{\vec{y}} \delta^{(3)}(\vec{x} - \vec{y}) \fdv{Q(t)}{\phi(t,\vec{y})}  \\
+	&= -\fdv{Q}{\phi(t, \vec{x})}.
+	\end{split}
+\end{align}
+The variation of $ Q $ is given by
+\begin{align}
+	\begin{split}
+	\delta Q &= \int \dd[3]{\vec{x}} \qty(\delta \pi \Delta x^{\nu} \partial_{\nu} \phi + \pi \Delta x^{\nu} \partial_{\nu} (\delta \phi )- \delta X^{0}) \\
+	&= \int \dd[3]{\vec{x}} \qty(\delta \pi \Delta x^{\nu} \partial_{\nu} \phi - (\partial_{\nu} \pi) \Delta x^{\nu} \delta \phi - \dv{X^{0}}{\mathscr{L}} \delta \mathscr{L}) + \int \dd[3]{\vec{x}} \partial_{\nu} \qty(\pi \Delta x^{\nu} \delta \phi) \\
+	&= \int \dd[3]{\vec{x}} \qty(\delta \pi \Delta \phi - \delta \phi \Delta \pi).
+	\end{split}
+\end{align}
+Note that we ignore the surface term, and recall that we let $ \phi, \pi $ be solutions to equations of motion to obtain the conserved current in the first place. This sets $ \delta \mathscr{L} = 0 $. Hence, we obtain
+\begin{equation}
+	\fdv{Q}{\pi} = \Delta \phi, \qq{and} \fdv{Q}{\phi} = - \Delta \pi.
+\end{equation}
+Comparing with equations \eqref{generator1} and \eqref{generator2} yields the required result.
+
+\newpage
+\section{Canonical Quantisation}
+\subsection{Poisson brackets to commutators}
+Quantising a field theory is nothing but an educated guess. Classical field theories are effective descriptions of quantum field theories in the limit of low energies and large scales subject to decoherence. This means that we \textit{throw away all the fine details} of the quantum theory to obtain the classical one. We can't magically recover all the information we threw away, so the best we can do is guess. 
+\par
+In non-relativistic quantum mechanics, we construct a map from a phase space with coordinates $ (\vec{q}, \vec{p}) $ to some Hilbert space. Coordinates $ q_{i}, p_{i} $ are promoted to operators $ \hat{q}_{i}, \hat{p}_{i} $. Functions on phase space are therefore naturally promoted to operators. The Poisson bracket structure is preserved in the following sense:
+\begin{equation}
+	\{f, g\} = h \longmapsto [\hat{f},\hat{g}] = i\hat{h}.
+\end{equation}
+We follow the same procedure - so called ``dogma of quantisation'' for fields: promote fields to operators and replace all Poisson brackets with commutators. So now,
+\begin{equation}
+	\phi(t,\vec{x}) \longmapsto \hat{\phi}(t, \vec{x}), \quad \pi(t,\vec{x}) \longmapsto \hat{\pi}(t,\vec{x}).
+\end{equation}
+Note that we have defined an operator for every point in spacetime, corresponding to the number of degrees of freedom our classical system had. Also, it is natural from now on to work in the Heisenberg picture where the time dependence is also attributed to the field operators. The field operators satisfy the usual \textit{equal time commutation relations}:
+\begin{gather}
+	[\hat{\phi}(t,\vec{x}), \hat{\phi}(t,\vec{y})] = [\hat{\pi}(t,\vec{x}), \hat{\pi}(t,\vec{y})] = 0, \\
+	[\hat{\phi}(t,\vec{x}), \hat{\pi}(t, \vec{y})] = i \delta^{(3)}(\vec{x} - \vec{y}).
+\end{gather}
+The Hamiltonian is
+\begin{equation} \label{2.5}
+	\hat{H}(t) = \frac{1}{2} \int \dd[3]{\vec{x}} \qty(\hat{\pi}^{2} + \abs*{\nabla \hat{\phi}}^{2} + m^{2} \hat{\phi}^{2}).
+\end{equation}
+Note a subtlety: when we promote functions to operators, they no longer commute. Consider a classical function of the form $ f = \pi \phi $. How should we promote this to an operator? We have infinitely many, different ways of doing so:
+\[
+\hat{f} \stackrel{?}{=} \hat{\pi} \hat{\phi} \neq \hat{\phi} \hat{\pi} \neq \hat{\pi}^{1/2} \hat{\phi} \hat{\pi}^{1/2} \neq \dots
+\]
+We'll deal with this issue when it arises.
+\par
+All we've done so far was to put hats on things and replace Poisson brackets with commutators. We would like to know what the Hilbert space looks like. To do so, let's look at Hamilton's equations. Replacing Poisson brackets with commutators yields Heisenberg's equations:
+\begin{equation}
+	\pdv{\hat{\phi}(x)}{t} = -i [\hat{\phi}(x), \hat{H}(t)], \quad \pdv{\hat{\pi}(x)}{t} = -i [\hat{\pi}(x), \hat{H}(t)].
+\end{equation}
+Let's evaluate the commutators:
+\begin{align}
+	\begin{split}
+		\pdv{\hat{\phi}(t,\vec{x})}{t} = -i [\hat{\phi}(t,\vec{x}), \hat{H}(t)] &= -\frac{i}{2} \int \dd[3]{\vec{y}} [\hat{\phi}(t,\vec{x}), \hat{\pi}(t, \vec{y})] \\
+		&= -i \int \dd[3]{\vec{y}} \hat{\pi}(t, \vec{y})[\hat{\phi}(t,\vec{x}), \hat{\pi}(t,\vec{y})] \\
+		&= \int \dd[3]{\vec{y}} \hat{\pi} (t, \vec{y}) \delta^{(3)}(\vec{x} - \vec{y}) \\
+		&= \hat{\pi}(t, \vec{x}).
+	\end{split}
+\end{align}
+Similarly,
+\begin{align}
+	\begin{split}
+		\pdv{\hat{\pi}(t,\vec{x})}{t} &= -i [\hat{\pi}(t,\vec{x}), \hat{H}(t)] \\
+		&= -\frac{i}{2} \int \dd[3]{\vec{y}} [\hat{\pi}(t,\vec{x}), \abs*{\nabla \hat{\phi}(t,\vec{y})}^{2} + m^{2} \hat{\phi}^{2}(t,\vec{y})] \\
+		&= -i \int \dd[3]{\vec{y}} \qty(\nabla_{\vec{y}} \hat{\phi}(t,\vec{y}) \cdot \nabla_{\vec{y}} [\hat{\pi}(t,\vec{x}), \hat{\phi}(t,\vec{y})] + m^{2} \hat{\phi}(t,\vec{y}) [\hat{\pi}(t,\vec{x}),\hat{\phi}(t,\vec{y})] ) \\
+		&= -m^{2} \hat{\phi}(t,\vec{x}) + i \int \dd[3]{\vec{y}} \nabla^{2} \hat{\phi}(t,\vec{y}) (-i) \delta^{(3)}(\vec{x} - \vec{y}) \\
+		&= -m^{2} \hat{\phi}(t,\vec{x}) + \nabla^{2} \hat{\phi}(t,\vec{x}).
+	\end{split}
+\end{align}
+Combining the two expressions yields a second order equation for $ \hat{\phi} $:
+\begin{equation} \label{kleingordonoperator}
+	\pdv[2]{\hat{\phi}(t,\vec{x})}{t} - \nabla^{2} \hat{\phi}(t,\vec{x}) + m^{2}\hat{\phi}(t,\vec{x}) = (\Box + m^{2}) \hat{\phi}(x) = 0.
+\end{equation}
+But this is just the Klein-Gordon equation! So, the Heisenberg picture field operator obeys the Klein-Gordon equation, as an operator equation.
+\subsection{Field operators}
+First, note that, since the classical fields are real, $ \hat{\phi} = \hat{\phi}^{\dagger} $ and $ \hat{\pi} = \hat{\pi}^{\dagger} $ are Hermitian. An easy way to convince yourself of this is to demand the Hamiltonian be Hermitian. Now, let's solve equation \eqref{kleingordonoperator}. First, to decouple $ \Box $ we write $ \hat{\phi}(x) $ as a Fourier integral. We can do this wlog by integrating over some four vector $ p^{\mu} $, keeping in mind $ \hat{\phi} $ is Hermitian:
+\begin{equation} \label{phifourier}
+	\hat{\phi}(x) = \int \frac{\dd[4]{p}}{(2\pi)^{4}} \qty( \hat{f}(p) e^{-ip_{\mu} x^{\mu}} + \hat{f}^{\dagger}(p) e^{ip_{\mu} x^{\mu}} ).
+\end{equation}
+This is a solution if $ p_{\mu}p^{\mu} = m^{2} $. But this is simply the dispersion relation for a relativistic particle of mass $ m $ if we interpret $ p^{\mu} $ as the four momentum. We can impose this constraint by integrating over $ \dd[3]{\vec{p}} $, restricting $ p^{0} = \sqrt{\vec{p}^{\,2} + m^{2}} $. But this is not the best way of doing things if we consider Lorentz invariance. Let's take an aside on this.
+\subsubsection{Lorentz invariance}
+Without worrying about the unitary operators which enact Poincare transformations (we will construct them later), we know how the field operator should transform under some Lorentz transformation $ \Lambda $ (in the active picture):
+\begin{equation}
+	\hat{\phi}(x) \longmapsto \hat{\overbar{\phi}}(x) = \hat{\phi}(\Lambda^{-1} x).
+\end{equation}
+Combining with equation \eqref{phifourier} yields the transformation law for $ \hat{f}(p) $. First, we write
+\begin{equation} \label{2.12}
+	\hat{\overbar{\phi}}(x) = \int \frac{\dd[4]{p}}{(2\pi)^{4}} \qty(\hat{\overbar{f}}(p) e^{-ip_{\mu} x^{\mu}} + \hat{\overbar{f}}^{\dagger}(p) e^{ip_{\mu} x^{\mu}})
+\end{equation}
+for some $ \hat{\overbar{f}} $ to be determined in terms of $ \hat{f} $. Then, note that
+\begin{equation}
+	\hat{\phi}(\Lambda^{-1} x) = \int \frac{\dd[4]{p}}{(2\pi)^{4}} \qty(\hat{f}(p) e^{-ip_{\mu} (\Lambda^{-1} x)^{\mu}} + \hat{f}^{\dagger}(p) e^{ip_{\mu} (\Lambda^{-1} x)^{\mu}}).
+\end{equation}
+Now, to compare the two expressions we define
+\begin{equation}
+	\overbar{p}^{\mu} = \lrz{\mu}{\nu} p^{\nu} \implies p_{\mu} \qty(\ilrz{\nu}{\mu} x^{\nu}) = \qty(\ilrz{\nu}{\mu} p_{\mu}) x^{\nu} = \overbar{p}_{\nu} x^{\nu}.
+\end{equation}
+Writing the integral over $ \overbar{p} $ yields:
+\begin{align}
+	\begin{split} \label{2.15}
+	\hat{\phi} (\Lambda^{-1} x) &= \int \frac{\dd[4]{\overbar{p}}}{(2\pi)^{4}} \abs{\det \Lambda} \qty( \hat{f}(\Lambda^{-1} \overbar{p}) e^{-i \overbar{p}_{\mu} x^{\mu}} + \hat{f}^{\dagger}(\Lambda^{-1} \overbar{p}) e^{i \overbar{p}_{\mu} x^{\mu}}) \quad \text{relabel $ \overbar{p} \to p $} \\
+	&= \int \frac{\dd[4]{p}}{(2\pi)^{4}} \qty( \hat{f}(\Lambda^{-1} p) e^{-ip_{\mu} x^{\mu}} + \hat{f}^{\dagger}(\Lambda^{-1} p) e^{ip_{\mu} x^{\mu}} ).
+	\end{split}
+\end{align}
+Comparing equations \eqref{2.12} and \eqref{2.15} yields the transformation law for $ \hat{f}(p) $:
+\begin{equation}
+	\hat{f}(p) \longmapsto \hat{\overbar{f}}(p) = \hat{f}(\Lambda^{-1} p).
+\end{equation}
+Hence, we see that $ \hat{f} $ transforms in the same way as $ \hat{\phi} $, as a scalar field. The reason for this is the invariance of the measure $ \dd[4]p $ under Poincare transformations. It will be useful to keep the terms in the integral manifestly Lorentz invariant. If we chose to integrate over $ \dd[3]{\vec{p}} $, then the transformation law for $ \hat{f} $ gets more complicated due to the transformation of the measure.
+\par
+We choose to impose the dispersion relation $ p^{2} = m^{2} $ constraint in a way that preserves the manifest Lorentz invariance of the terms in the integral. To do this, we use a delta function:
+\begin{equation} \label{2.17}
+	\hat{\phi}(x) = \int \frac{\dd[4]{p}}{(2\pi)^{4}} \eval{\delta(p^{2} - m^{2})}_{p^{0} > 0} \qty( \hat{f}(p) e^{-ip_{\mu} x^{\mu}} + \hat{f}^{\dagger}(p) e^{ip_{\mu} x^{\mu}} )
+\end{equation}
+Note that the delta function itself is Lorentz invariant since its argument is a Lorentz scalar. Restricting to $ p^{0} > 0 $ is also Lorentz invariant as long as we only consider orthochronous Lorentz transformations.
+\par
+Now, we perform the integral over $ p^{0} $. Recall the following property of the delta function:
+\begin{equation}
+	\delta(\varphi(x)) = \sum_{x_{n} \in \mathcal{X}} \frac{\delta(x - x_{n})}{\abs{\varphi'(x_{n})}}
+\end{equation}
+where $ \varphi $ is some function differentiable at $ x_n $ and $ \mathcal{X} = \{ x \in \mathbb{R} \,|\, \varphi(x) = 0 \} $. Applying this to our delta function yields
+\begin{equation}
+	\eval{\delta(p^{2} - m^{2})}_{p^{0} > 0} = \frac{\delta\qty(p^{0} - E(\vec{p}))}{2p^{0}}, \qq{where} E(\vec{p}) = \sqrt{\vec{p}^{\,2} + m^{2}}.
+\end{equation}
+Now, we perform the integral over $ p^{0} $ in equation \eqref{2.17}:
+\begin{align}
+	\begin{split} \label{2.20}
+			\hat{\phi}(x) &= \int \frac{\dd[3]{\vec{p}}}{(2\pi)^{4}} \int \dd{p^{0}} \frac{\delta\qty(p^{0} - E(\vec{p}))}{2p^{0}} \qty( \hat{f}(p) e^{-ip_{\mu} x^{\mu}} + \hat{f}^{\dagger}(p) e^{ip_{\mu} x^{\mu}} ) \\
+			&= \int \frac{\dd[3]{\vec{p}}}{(2\pi)^{3} 2E(\vec{p})} \eval{\qty(\hat{a}(\vec{p}) e^{-ip_{\mu} x^{\mu}} + \hat{a}^{\dagger} (\vec{p}) e^{ip_{\mu} x^{\mu}})}_{p_{0} = E(\vec{p})},
+	\end{split}
+\end{align}
+where we defined the (suggestively named) operator
+\begin{equation}
+	\hat{a}(\vec{p}) = \eval{\frac{\hat{f}(p)}{2\pi}}_{p^{0} = E(\vec{p})}.
+\end{equation}
+The factor of $ 2\pi $ is just for convenience. The advantage of going through all this is that we keep all the terms in the integral manifestly Lorentz invariant. 
+\subsubsection{Commutation relations}
+Let's obtain the commutation relations for $ \hat{a}(\vec{p}) $ and $ \hat{a}^{\dagger}(\vec{p}) $. First, from equation \eqref{2.20} we obtain the field momentum:
+\begin{equation} \label{2.22}
+	\hat{\pi}(x) = \partial_{t} \hat{\phi}(x) = \frac{-i}{2} \int \frac{\dd[3]{\vec{p}}}{(2\pi)^{3}} \qty( \hat{a}(\vec{p}) e^{-ip_{\mu} x^{\mu}} - \hat{a}^{\dagger}(\vec{p}) e^{ip_{\mu} x^{\mu}} ).
+\end{equation}
+It is straightforward to then show the following relations:
+\begin{align}
+	\int \dd[3]{\vec{x}} e^{ip_{\mu} x^{\mu}} \hat{\phi}(x) &= \frac{1}{2E(\vec{p})} \qty(\hat{a}(\vec{p}) + \hat{a}^{\dagger}(\vec{p}) e^{2iE(\vec{p})t}), \\
+	\int \dd[3]{\vec{x}} e^{ip_{\mu} x^{\mu}} \hat{\pi}(x) &= \frac{-i}{2} \qty( \hat{a}(\vec{p}) - \hat{a}^{\dagger}(\vec{p}) e^{2iE(\vec{p})t} ).
+\end{align}
+where $ x = (t,\vec{x}) $. Solving for $ \hat{a} $ and $ \hat{a}^{\dagger} $ yields
+\begin{align}
+	\hat{a}(\vec{p}) &= \int \dd[3]{\vec{x}} e^{ip_{\mu} x^{\mu}} \qty(E(\vec{p})\hat{\phi}(x) + i \hat{\pi}(x)) \\
+	\hat{a}^{\dagger}(\vec{p}) &= \int \dd[3]{\vec{x}} e^{-ip_{\mu} x^{\mu}} \qty(E(\vec{p}) \hat{\phi}(x) - i \hat{\pi}(x))
+\end{align}
+It then follows that
+\begin{gather}
+	[\hat{a}(\vec{p}), \hat{a}(\vec{q})] = [\hat{a}^{\dagger}(\vec{p}), \hat{a}^{\dagger}(\vec{q})] = 0, \\ [\hat{a}(\vec{p}), \hat{a}^{\dagger}(\vec{q})] = (2\pi)^{3} 2E(\vec{p}) \delta^{(3)} (\vec{p} - \vec{q}).
+\end{gather}
+\subsection{Hamiltonian}
+We can find an expression for the Hamiltonian in terms of $ \hat{a}(\vec{p}) $ and $ \hat{a}^{\dagger}(\vec{p}) $ by substituting equations \eqref{2.20} and \eqref{2.22} into equation \eqref{2.5}. Some algebra yields
+\begin{gather}
+	\int\dd[3]{\vec{x}} \hat{\pi}^{2} = \frac{1}{4} \int \frac{\dd[3]{\vec{p}}}{(2\pi)^{3}} \qty(-\hat{a}(\vec{p})\hat{a}(-\vec{p}) - \hat{a}^{\dagger}(\vec{p})\hat{a}^{\dagger}(-\vec{p}) +\hat{a}(\vec{p})\hat{a}^{\dagger}(\vec{p}) + \hat{a}^{\dagger}(\vec{p}) \hat{a}(\vec{p})), \\
+	\int \dd[3]{\vec{x}} \partial_{i} \hat{\phi} \, \partial_{i} \hat{\phi} = \frac{1}{4} \int \frac{\dd[3]{\vec{p}} \, \vec{p}^{\,2}}{(2\pi)^{3} E(\vec{p})^{2}} \qty( \hat{a}(\vec{p}) \hat{a}(-\vec{p}) + \hat{a}^{\dagger}(\vec{p}) \hat{a}^{\dagger}(-\vec{p}) + \hat{a}(\vec{p}) \hat{a}^{\dagger}(\vec{p}) + \hat{a}^{\dagger}(\vec{p}) \hat{a}(\vec{p}) ), \\
+	\int \dd[3]{\vec{x}} m^{2} \hat{\phi}^{2} = \frac{1}{4} \int \frac{\dd[3]{\vec{p}} m^{2}}{(2\pi)^{3} E(\vec{p})^{2}} \qty( \hat{a}(\vec{p}) \hat{a}(-\vec{p}) + \hat{a}^{\dagger}(\vec{p}) \hat{a}^{\dagger}(-\vec{p}) + \hat{a}(\vec{p}) \hat{a}^{\dagger}(\vec{p}) + \hat{a}^{\dagger}(\vec{p}) \hat{a}(\vec{p}) ) .
+\end{gather}
+Putting everything together:
+\begin{equation}
+	\hat{H} = \int \frac{\dd[3]{\vec{p}}}{(2\pi)^{3} 2 E(\vec{p})} E(\vec{p}) \hat{a}^{\dagger}(\vec{p}) \hat{a}(\vec{p}) + \frac{1}{4} \int \frac{\dd[3]{\vec{p}}}{(2\pi)^{3}} (2\pi)^{3} 2 E(\vec{p}) \delta^{(3)}(0).
+\end{equation}
+The second term is slightly problematic. Firstly, $ \delta^{(3)}(0) $ is divergent. This is due to the infinite volume of the space we consider. We can get rid of it by confining ourselves to some finite volume $ V $. Secondly, the integral diverges. This can be prevented by introducing a energy cutoff scale. In this case, the second term is just some constant and plays no role in dynamics, so we simply subtract it to obtain
+\begin{equation}
+	\hat{H} = \int \frac{\dd[3]{\vec{p}}}{(2\pi)^{3} 2 E(\vec{p})} E(\vec{p}) \hat{a}^{\dagger}(\vec{p}) \hat{a}(\vec{p}) 
+\end{equation}
+
+
+\end{document}
+
+
+
+In quantum mechanics, symmetries are represented by unitary operators. When we say we want to build a relativistic quantum field theory, 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
