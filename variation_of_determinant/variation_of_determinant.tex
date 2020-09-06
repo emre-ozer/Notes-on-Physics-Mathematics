@@ -1,0 +1,171 @@
+\documentclass{article}
+\input{note_header.tex}
+\input{emre_header.tex}
+
+\DeclareMathOperator{\sgn}{sgn}
+
+\title{Variation of Matrix Determinant}
+\date{}
+\author{Emre Özer}
+\begin{document}
+	\maketitle
+	\tableofcontents
+\section{Maths: Derivation}
+Let $ M $ be an $ n \times n $ matrix with components $ M_{ij} $ and inverse $ M^{-1} $ with components $ M^{ij} $, such that
+\begin{equation} \label{eq:1}
+	\sum_{j} M^{-1}_{ij}M_{jk} = \delta_{ik}.
+\end{equation}
+We are interested in the variation $ \delta \det M $. In terms of $ \delta M_{ij} $, this is
+\begin{equation}
+	\delta \det M = \sum_{ij} \pdv{\det M}{M_{ij}} \delta M_{ij}.
+\end{equation}
+One expression for $ \det M $ is
+\begin{equation}
+	\det M  = \sum_{\pi \in S_{n}} \sgn(\pi) \prod_{k} M_{k\pi(k)},
+\end{equation}
+where $ \pi $ are permutations and $ S_{n} $ is the symmetric group of degree $ n $. Then,
+\begin{equation}
+	\pdv{\det M}{M_{ij}} = \sum_{\pi \in S_{n}} \sgn(\pi) \pdv{M_{ij}}(\prod_{k} M_{k\pi(k)}) = \sum_{\pi \in S_{n}} \sgn(\pi) \delta_{j\pi(i)} \prod_{k\neq i} M_{k\pi(k)}.
+\end{equation}
+Now, use equation \eqref{eq:1} to substitute for $ \delta_{j \pi(i)} $:
+\begin{equation}
+	\pdv{\det M}{M_{ij}} = \sum_{\pi \in S_{n}} \sgn(\pi) \qty(\sum_{\ell} M^{-1}_{j \ell} M_{\ell \pi(i)} )  \prod_{k\neq i} M_{k\pi(k)} = \sum_{\ell} M^{-1}_{j\ell} \sum_{\pi \in S_{n}} \sgn(\pi) \prod_{k\neq i} M_{k\pi(k)} M_{\ell \pi(i)}.
+\end{equation}
+The trick here is to separate the sum over $ \ell $ into two parts: $ \ell = i $ and $ \ell \neq i $. The $ \ell = i $ part gives
+\begin{equation}
+	M^{-1}_{ji} \sum_{\pi \in S_{n}} \sgn(\pi) \prod_{k\neq i} M_{k \pi(k)} M_{i \pi(i)} = 	M^{-1}_{ji} \sum_{\pi \in S_{n}} \sgn(\pi) \prod_{k} M_{k \pi(k)} = M^{-1}_{ji} \det M.
+\end{equation}
+The $ \ell \neq i $ part is
+\begin{equation} \label{eq:7}
+	\sum_{\ell \neq i} M^{-1}_{j\ell} \sum_{\pi \in S_{n}} \sgn(\pi) \prod_{k\neq i} M_{k\pi(k)} M_{\ell \pi(i)} = \sum_{\ell \neq i} M^{-1}_{j\ell} \sum_{\pi \in S_{n}} \sgn(\pi) \prod_{k\neq \ell, i} M_{k\pi(k)} M_{\ell \pi(\ell)} M_{\ell \pi(i)},
+\end{equation}
+where we separated the $ \ell^{\text{th}}$ term from product. Now, here is the key point: the expression is \textit{symmetric} under the exchange $ \pi(i) \leftrightarrow \pi(\ell) $ due to the $ M_{\ell \pi(\ell)}M_{\ell \pi(i)} $ term. 
+\par
+For any $ \pi \in S_{n} $ with $ \sgn(\pi) = +1 $, we can construct a unique $ \pi' \in S_{n} $ with $ \sgn(\pi') = -1 $ by setting
+\begin{equation}
+	\pi'(j) = \begin{cases}
+	\pi(\ell) & j = i, \\
+	\pi(i) & j = \ell, \\
+	\pi(j) & \text{otherwise}.
+	\end{cases}
+\end{equation}
+Moreover, the set of all $ \pi' $ is the set of all odd permutations of degree $ n $. Hence, equation \eqref{eq:7} is identically zero. This gives the result
+\begin{equation}
+	\pdv{\det M}{M_{ij}} = M^{-1}_{ji} \det M \quad\Rightarrow\quad \delta \det M = \det M \sum_{ij} M^{-1}_{ji} \delta M_{ij}.
+\end{equation}
+\section{Applications to GR}
+\subsection{Covariant divergence}
+Consider the metric $ g_{\mu \nu} $ with inverse $ g^{\mu \nu} $. Let $ g = \abs{\det g_{\mu \nu}} $. Then, we have
+\begin{equation}
+	\delta g = g g^{\mu \nu} \delta g_{\mu \nu}
+\end{equation}
+In particular, this implies
+\begin{equation}
+	\partial_{\lambda} g = \pdv{g}{g_{\mu \nu}} \partial_{\lambda} g_{\mu \nu} = g g^{\mu \nu} \partial_{\lambda} g_{\mu \nu}.
+\end{equation}
+The Levi-Civita connection $ \Gamma\indices{^{\mu}_{\nu \lambda}} $ obeys
+\begin{equation}
+	\partial_{\lambda} g_{\mu \nu} = \Gamma_{\mu \nu \lambda} + \Gamma_{\nu \mu \lambda}.
+\end{equation}
+Using these, we can obtain a useful expression for the covariant divergence of a vector field
+\begin{equation}
+	\nabla_{\mu} V^{\mu} = \partial_{\mu} V^{\mu} + \Gamma\indices{^{\mu}_{\mu \lambda}} V^{\lambda}.
+\end{equation}
+Taking a closer look at the connection:
+\begin{equation}
+	\Gamma\indices{^{\mu}_{\mu \lambda}} =  g^{\mu \nu} \Gamma_{\nu \mu \lambda} = \frac{1}{2} g^{\mu \nu} \partial_{\lambda} g_{\mu\nu} = \frac{1}{\sqrt{g}}\partial_{\lambda} \sqrt{g}.
+\end{equation}
+Substituting this to the expression above yields the result:
+\begin{equation} \label{eq:covdiv}
+	\nabla_{\mu} V^{\mu} = \frac{1}{\sqrt{g}} \partial_{\mu} \qty(\sqrt{g}V^{\mu}).
+\end{equation}
+\subsection{Covariant Laplacian of scalar}
+The Laplacian of a scalar is defined covariantly as
+\begin{equation}
+	\Box \phi = \nabla^{\mu} \nabla_{\mu} \phi = g^{\mu \nu} \nabla_{\mu} \nabla_{\mu} \phi.
+\end{equation}
+Noting that the metric is covariantly constant, i.e. $ \nabla_{\lambda} g_{\mu\nu} = 0 $, equation \eqref{eq:covdiv} implies
+\begin{equation} \label{covlap}
+	g^{\mu \nu} \nabla_{\mu} \nabla_{\mu} \phi = \nabla_{\mu} g^{\mu\nu} \partial_{\nu} \phi = \frac{1}{\sqrt{g}} \partial_{\mu} \qty(\sqrt{g} g^{\mu\nu} \partial_{\nu} \phi).
+\end{equation}
+\subsection{Minimal coupling: Klein-Gordon}
+The special relativistic Klein-Gordon action is
+\begin{equation}
+	\mathcal{S}[\phi] = \int \dd[4]{x} \qty[-\tfrac{1}{2}\eta^{\mu\nu} \partial_{\mu}\phi \partial_{\nu} \phi - \tfrac{1}{2} m^{2} \phi^{2}],
+\end{equation}
+with metric convention $ \eta = \text{diag}(-1,+1,+1,+1) $. The resulting equation of motion is
+\begin{equation}
+	(\Box_{\eta} - m^{2}) \phi = 0,
+\end{equation}
+where $ \Box_{\eta} = \eta^{\mu\nu}\partial_{\mu}\partial_{\nu} $. Now, we write generally covariant action:
+\begin{equation}
+	\mathcal{S}[\phi, g_{\mu\nu}] = \int \dd[4]{x} \sqrt{g} \qty[-\tfrac{1}{2} g^{\mu\nu}\partial_{\mu}\phi \partial_{\nu}\phi - \tfrac{1}{2} m^{2} \phi^{2}]
+\end{equation}
+Varying this action with respect to $ \phi $ yields
+\begin{align}
+	\begin{split}
+		\delta \mathcal{S} &= -\int \dd[4]{x} \sqrt{g} \qty[ g^{\mu\nu} \partial_{\nu} \phi \partial_{\mu} \delta \phi + m^{2} \phi \delta \phi] \\
+		&= \int \dd[4]{x} \sqrt{g} \qty[ \frac{1}{\sqrt{g}} \partial_{\mu} \qty( \sqrt{g} g^{\mu \nu} \partial_{\nu} \phi ) - m^{2} \phi ] \delta \phi + \text{surface term} \\
+		&= \int \dd[4]{x} \sqrt{g} \qty[\Box_{g} \phi - m^{2} \phi] \delta \phi = 0,
+	\end{split}
+\end{align}
+where we used equation \eqref{covlap} going from line 2 to 3. Hence, the covariant equation of motion is
+\begin{equation}
+	\qty(\Box_{g} - m^{2}) \phi = 0.
+\end{equation}
+
+\subsection{Minimal coupling: Maxwell}
+Vacuum special relativistic Maxwell action is
+\begin{equation}
+	\mathcal{S}[A_{\nu}] = -\frac{1}{4} \int \dd[4]{x}  F^{\mu \nu} F_{\mu \nu} = -\frac{1}{4} \int \dd[4]{x}  \eta^{\mu \alpha} \eta^{\nu \beta} F_{\alpha \beta} F_{\mu \nu},
+\end{equation}
+with field tensor $ F_{\mu \nu} = \partial_{\mu}A_{\nu} - \partial_{\nu} A_{\mu} $. The correct way to proceed is to keep the field tensor definition fixed, i.e. don't replace $ \partial \to \nabla $. Instead, simply consider the action
+\begin{equation}
+	\mathcal{S}[A_{\nu}, g_{\mu \nu}] = -\frac{1}{4} \int \sqrt{g}\dd[4]{x}  g^{\mu \alpha} g^{\nu \beta} F_{\alpha \beta} F_{\mu \nu}. 
+\end{equation}
+Varying the action with respect to $ A_{\nu} $:
+\begin{align}
+	\begin{split}
+		\delta \mathcal{S} &= -\frac{1}{2} \int \sqrt{g}\dd[4]{x}  g^{\mu \alpha} g^{\nu \beta} F_{\alpha \beta} \delta F_{\mu \nu} \\
+		&= -\frac{1}{2} \int \sqrt{g}\dd[4]{x}  g^{\mu \alpha} g^{\nu \beta} F_{\alpha \beta} (\partial_{\mu} \delta A_{\nu} - \partial_{\nu} \delta A_{\mu}) \\
+		&= -\int \sqrt{g}\dd[4]{x}  g^{\mu \alpha} g^{\nu \beta} F_{\alpha \beta} \partial_{\mu} \delta A_{\nu} \\
+		&= \int \dd[4]{x} \partial_{\mu} \qty(\sqrt{g} g^{\mu \alpha} g^{\nu \beta} F_{\alpha \beta}) \delta A_{\nu} + \text{surface term} \\
+		&= .\int \dd[4]{x} \partial_{\mu} \qty(\sqrt{g} F^{\mu \nu}) \delta A_{\nu} = 0.
+	\end{split}
+\end{align}
+The resulting equation of motion is
+\begin{equation}
+	\partial_{\mu} \qty(\sqrt{g} F^{\mu \nu}) = 0.
+\end{equation}
+At first glance this doesn't look equivalent to $ \nabla_{\mu} F^{\mu \nu} = 0 $, which is what we may have expected. It turns out that they are equal due to antisymmetry of $ F_{\mu \nu} $:
+\begin{equation}
+	\nabla_{\mu} F^{\mu \nu} = \partial_{\mu} F^{\mu \nu} + \Gamma\indices{^{\mu}_{\mu \lambda}} F^{\lambda \nu} + \Gamma\indices{^{\nu}_{\mu \lambda}} F^{\mu \lambda}.
+\end{equation}
+The last term vanishes since $ \Gamma\indices{^{\nu}_{\mu \lambda}} $ is symmetric in $ \mu \lambda $, and $ F^{\mu \lambda} $ antisymmetric. Hence, we have
+\begin{equation}
+	\nabla_{\mu} F^{\mu \nu} = \frac{1}{\sqrt{g}} \partial_{\mu} \qty(\sqrt{g} F^{\mu \nu}) = 0 \quad \Leftrightarrow \quad \partial_{\mu} \qty(\sqrt{g} F^{\mu \nu}) = 0.
+\end{equation}
+\begin{note}
+	Using Euler-Lagrange equation to obtain equations of motion instead of varying the action directly is a waste of time and effort. If you don't believe me, have a go at the above derivation.
+\end{note}
+
+
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
